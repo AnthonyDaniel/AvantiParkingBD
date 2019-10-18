@@ -1,0 +1,379 @@
+USE master
+GO
+CREATE DATABASE AvantiParking ON PRIMARY
+(NAME = 'AvantiParking_data',
+FILENAME = 'C:\AvantiParking\AvantiParking_data.mdf', 
+SIZE = 10MB,
+MAXSIZE = 100MB,
+FILEGROWTH = 25MB)
+LOG ON
+(NAME = 'AvantiParking_log',
+FILENAME = 'C:\AvantiParking\AvantiParking_log.ldf', 
+SIZE = 20MB,
+MAXSIZE = 100MB,
+FILEGROWTH = 15%)
+COLLATE Modern_Spanish_CI_AI
+GO
+
+USE AvantiParking
+GO
+CREATE TABLE usuario(/*Se cambio el nombre de la tabla de users a usuario*/
+	username nvarchar(50) NOT NULL,
+	id int NOT NULL UNIQUE,
+	nombre nvarchar(50) NOT NULL,
+	direccion nvarchar(50) NOT NULL,
+	telefono int NOT NULL,
+	tipo tinyint,
+	contrasena nvarchar(50) NOT NULL,/*Se cambio el nombre del atributo de password a contrasena*/
+	CONSTRAINT PK_usuario PRIMARY KEY (username)
+)
+GO
+CREATE TABLE vehiculo(
+	placa varchar(255) NOT NULL,
+	marca varchar(255) NOT NULL,
+	modelo varchar(255) NOT NULL,
+	usuario nvarchar(50) NOT NULL, /*Se cambio el nombre del atributo de users a usuario*/
+	CONSTRAINT Pk_vehiculo PRIMARY KEY (placa),
+	CONSTRAINT FK_vehiculo_usuario FOREIGN KEY (usuario) REFERENCES Usuario(username)
+) 
+GO
+CREATE TABLE sede(
+	id_sede int identity NOT NULL,
+	nombre nvarchar(50) NOT NULL,
+	direccion nvarchar(50) NOT NULL
+	CONSTRAINT PK_sede PRIMARY KEY (id_sede)
+) 
+GO
+CREATE TABLE parqueo(
+	id_parqueo int NOT NULL,
+	nombre nvarchar(50) NOT NULL,
+	zona nvarchar(50) NOT NULL,
+	cantidad int NOT NULL,
+	comienzo int NOT NULL,
+	sede int NOT NULL
+	CONSTRAINT PK_parqueo PRIMARY KEY (id_parqueo),
+	CONSTRAINT FK_parqueo_sede FOREIGN KEY (sede) REFERENCES Sede(id_sede)
+) 
+GO
+CREATE TABLE espacio(
+	id_espacio int identity NOT NULL,
+	nombre int NOT NULL,
+	estado tinyint NOT NULL,
+	tipo_espacio nvarchar(50) NOT NULL,
+	parqueo int NOT NULL,
+	CONSTRAINT PK_espacio PRIMARY KEY (id_espacio),
+	CONSTRAINT FK_espacio_parqueo FOREIGN KEY (parqueo) REFERENCES Parqueo(id_parqueo)
+) 
+GO
+CREATE TABLE reserva(
+	id_reserva int identity NOT NULL,/*Se cambio el nombre del atributo de id a idReserva*/
+	espacio int NOT NULL,/*Se cambio el nombre del atributo de espacios a espacio*/
+	fecha_reserva date NOT NULL,
+	hora_final time(7) NOT NULL,
+	hora_inicio time(7) NOT NULL,
+	usuario nvarchar(50) NOT NULL, /*Se cambio el nombre del atributo de users a usuario*/
+	vehiculo varchar(255) NOT NULL,
+	CONSTRAINT PK_reserva PRIMARY KEY (id_reserva),
+	CONSTRAINT FK_reserva_usuario FOREIGN KEY (usuario) REFERENCES Usuario(username),
+	CONSTRAINT FK_reserva_vehiculo FOREIGN KEY (vehiculo) REFERENCES Vehiculo(placa),
+	CONSTRAINT FK_reserva_espacio FOREIGN KEY (espacio) REFERENCES Espacio(id_espacio)
+)
+GO
+
+
+USE AvantiParking
+GO
+/*----------------------------INICIO DE SEDES-----------------------------------------------*/
+/* INICIO DEL PROCEDIMIENTO SEDE AGREGAR */
+create procedure pa_agregar_sede
+	@nombre nvarchar(50),
+	@direccion nvarchar(50)
+as
+if (@nombre is null) or (@direccion is null)
+	return 0;
+else	
+begin	
+	insert into sede (nombre,direccion)
+	values (@nombre,@direccion);	
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO SEDE ACTUALIZAR */
+create procedure pa_actualizar_sede
+	@id_sede int,
+	@nombre nvarchar(50),
+	@direccion nvarchar(50)
+as
+if (@id_sede is null) or (@nombre is null) or (@direccion is null)
+	return 0	
+else	
+begin	
+	update sede set nombre=@nombre,direccion=@direccion
+	where id_sede = @id_sede;
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO SEDE ELIMINAR */
+create procedure pa_eliminar_sede
+	@id_sede int
+as
+declare @resultado int;
+select @resultado = count(*) from sede where id_sede = @id_sede;
+if (@id_sede is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from sede where id_sede = @id_sede
+	return 1
+end
+ go
+/*INICIO DE LA VISTA DE SEDE*/
+create view view_sede
+ as 
+ select id_sede as ID, nombre as Nombre, direccion as Direccion
+ from sede;
+ /*----------------------------FIN DE SEDES-----------------------------------------------*/
+ go
+
+
+ /*----------------------------INICIO DE parqueo-----------------------------------------------*/
+/* INICIO DEL PROCEDIMIENTO Parqueo AGREGAR */
+create procedure pa_agregar_parqueo
+	@id int,
+	@nombre nvarchar(50),
+	@zona nvarchar(50),
+	@cantidad int,
+	@comienzo int,
+	@sede int
+as
+declare @resultado int;
+select @resultado = count(*) from sede where id_sede = @sede;
+
+if (@id is null) or (@nombre is null) or (@zona is null) or (@cantidad is null) or (@sede is null) or (@resultado = 0) or (@cantidad = 0) or @comienzo is null
+	return 0;
+else	
+begin	
+	insert into parqueo (id_parqueo,nombre,zona,cantidad,comienzo,sede)
+	values (@id,@nombre,@zona,@cantidad,@comienzo,@sede);	
+
+	declare @cant int;
+	set @cant = 0;
+
+	WHILE @cant < @cantidad
+	BEGIN
+		insert into espacio (nombre,estado,tipo_espacio,parqueo)
+		values (@comienzo,0,'Regular',@id);	
+	SET @cant = @cant + 1;
+	SET @comienzo = @comienzo + 1;
+	END;
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO Parqueo ACTUALIZAR */
+create procedure pa_actualizar_parqueo
+	@id int,
+	@nombre nvarchar(50),
+	@zona nvarchar(50),
+	@sede int
+as
+declare @resultado int;
+select @resultado = count(*) from sede where id_sede = @sede;
+
+if (@id is null) or (@nombre is null) or (@zona is null) or (@sede is null) or (@resultado = 0)
+	return 0;
+else	
+begin	
+	update parqueo set nombre=@nombre,zona=@zona, sede = @sede
+	where id_parqueo = @id;
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO Parqueo ELIMINAR */
+create procedure pa_eliminar_parqueo
+	@id int
+as
+declare @resultado int;
+select @resultado = count(*) from parqueo where id_parqueo = @id;
+if (@id is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from parqueo where id_parqueo = @id
+	return 1
+end
+ go
+/*INICIO DE LA VISTA DE espacio*/
+create view view_parqueo
+ as 
+ select id_parqueo as ID, parqueo.nombre as Nombre, zona as Zona, cantidad as Cantidad, comienzo as Comienzo, sede.id_sede as SedeID, sede.nombre as SedeNombre
+ from parqueo inner join sede on sede.id_sede = parqueo.sede;
+ /*----------------------------FIN DE Parqueos-----------------------------------------------*/
+ go
+
+  /*----------------------------INICIO DE Espacios-----------------------------------------------*/
+/* INICIO DEL PROCEDIMIENTO espacio AGREGAR */
+create procedure pa_agregar_espacio
+	@nombre int,
+	@parqueo int
+as
+if (@nombre is null) or @parqueo is null
+	return 0;
+else	
+begin	
+	insert into espacio(nombre,tipo_espacio,estado,parqueo)
+	values (@nombre,'Regular',0,@parqueo);	
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO espacio ACTUALIZAR */
+create procedure pa_actualizar_espacio
+	@id int,
+	@nombre int,
+	@estado tinyint,
+	@tipo_espacio nvarchar(50)
+as
+if (@id is null) or (@nombre is null) or (@estado is null) or (@tipo_espacio is null)
+	return 0;
+else	
+begin	
+	update espacio set nombre=@nombre,estado=@estado, tipo_espacio = @tipo_espacio
+	where id_espacio = @id;
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO espacio ELIMINAR */
+create procedure pa_eliminar_espacio
+	@id int
+as
+declare @resultado int;
+select @resultado = count(*) from espacio where id_espacio = @id;
+if (@id is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from espacio where id_espacio = @id
+	return 1
+end
+ go
+/*INICIO DE LA VISTA DE espacio*/
+create view view_espacio
+ as 
+ select espacio.id_espacio as ID, espacio.nombre as Nombre, espacio.tipo_espacio as Tipo, espacio.estado as Estado, parqueo.id_parqueo as ParqueoID, parqueo.nombre as ParqueoNombre
+ from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo;
+ /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
+ go
+
+  /*----------------------------INICIO DE USUARIO-----------------------------------------------*/
+/* INICIO DEL PROCEDIMIENTO USUARIO AGREGAR */
+create procedure pa_agregar_usuario
+	@username nvarchar(50),
+	@id int,
+	@nombre nvarchar(50),
+	@direccion nvarchar(50),
+	@telefono int,
+	@contrasena nvarchar(50)
+as
+if (@nombre is null) or (@id is null) or (@nombre is null) or (@direccion is null) or (@telefono is null) or (@contrasena is null)
+	return 0;
+else	
+begin	
+	insert into usuario(username,id,nombre,direccion,telefono,contrasena)
+	values (@username,@id,@nombre,@direccion,@telefono,@contrasena);	
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO USUARIO ACTUALIZAR */
+create procedure pa_actualizar_usuario
+	@id int,
+	@nombre nvarchar(50),
+	@direccion nvarchar(50),
+	@telefono int,
+	@tipo tinyint,
+	@contrasena nvarchar(50)
+as
+if (@nombre is null) or (@id is null) or (@nombre is null) or (@direccion is null) or (@telefono is null) or (@tipo is null) or (@contrasena is null)
+	return 0;
+else	
+begin	
+	update usuario set nombre=@nombre,direccion=@direccion, telefono = @telefono, tipo = @tipo,contrasena = @contrasena
+	where id = @id;
+	return 1
+end
+ go
+
+/* INICIO DEL PROCEDIMIENTO USUARIO ELIMINAR */
+create procedure pa_eliminar_usuario
+	@id int
+as
+declare @resultado int;
+select @resultado = count(*) from usuario where id = @id;
+if (@id is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from usuario where id = @id
+	return 1
+end
+ go
+/*INICIO DE LA VISTA DE USUARIO*/
+create view view_usuario
+ as 
+ select usuario.username as Usuario, usuario.id as ID, usuario.nombre as Nombre, usuario.tipo as Tipo, usuario.telefono as Telefono,usuario.direccion as Direccion 
+ from usuario
+ /*----------------------------FIN DE USUARIO-----------------------------------------------*/
+ go
+ /*----------------------------INICIO DE USUARIO-----------------------------------------------*/
+/* INICIO DEL PROCEDIMIENTO USUARIO AGREGAR */
+create procedure pa_agregar_vehiculo
+	@placa varchar(255),
+	@marca varchar(255),
+	@modelo varchar(255),
+	@usuario nvarchar(50)
+as
+if (@placa is null) or (@marca is null) or (@modelo is null) or (@usuario is null)
+	return 0;
+else	
+begin	
+	insert into vehiculo(placa,marca,modelo,usuario)
+	values (@placa,@marca,@modelo,@usuario);	
+	return 1
+end
+ go
+/* INICIO DEL PROCEDIMIENTO USUARIO ACTUALIZAR */
+create procedure pa_actualizar_vehiculo
+	@placa varchar(255),
+	@marca varchar(255),
+	@modelo varchar(255),
+	@usuario nvarchar(50)
+as
+if (@placa is null) or (@marca is null) or (@modelo is null) or (@usuario is null)
+	return 0;
+else	
+begin	
+	update vehiculo set marca=@marca,modelo=@modelo, usuario = @usuario
+	where placa = @placa;
+	return 1
+end
+ go
+
+/* INICIO DEL PROCEDIMIENTO USUARIO ELIMINAR */
+create procedure pa_eliminar_vehiculo
+	@id nvarchar(50)
+as
+declare @resultado int;
+select @resultado = count(*) from vehiculo where placa = @id;
+if (@id is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from vehiculo where placa = @id
+	return 1
+end
+ go
+/*INICIO DE LA VISTA DE Vehiculo*/
+create view view_vehiculo
+ as 
+ select vehiculo.placa as Placa, vehiculo.marca as Marca, vehiculo.modelo as Modelo, usuario.username as Usuario
+ from vehiculo inner join usuario on usuario.username = vehiculo.usuario;
+ /*----------------------------FIN DE VEHICULO-----------------------------------------------*/
+ go

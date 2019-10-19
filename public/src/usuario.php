@@ -28,23 +28,23 @@ $app->post('/api/usuario', function($request,$response,$args){
     $usuario = $request->getParam('usuario');
     $contrasena = $request->getParam('contrasena');
   
-    $username = $request->getParam('username');
+  $username = $request->getParam('username');
 	$id = $request->getParam('id');
 	$nombre = $request->getParam('nombre');
 	$direccion = $request->getParam('direccion');
 	$telefono = $request->getParam('telefono');
 	$contra = $request->getParam('contra');
-
+  //echo json_encode($username." ".$id." ".$nombre." ".$direccion." ".$telefono." ".$contra. " ". $usuario. " ". $contrasena); 
     $db=new PDO($SGBD, $usuario,$contrasena);
 
-   $sql = "exec pa_agregar_usuario :username,:id,:nombre,:direccion,:telefono,:contra;";
+   $sql = "exec pa_agregar_usuario :username,:id,:nombre,:direccion,:telefono,:contra";
    try{
      $resultado = $db->prepare($sql);
 
      $resultado->bindParam(':username', $username);
      $resultado->bindParam(':id', $id);
      $resultado->bindParam(':nombre', $nombre);
-     $resultado->bindParam(':direccion', $direccin);
+     $resultado->bindParam(':direccion', $direccion);
      $resultado->bindParam(':telefono', $telefono);
      $resultado->bindParam(':contra', $contra);
 
@@ -111,7 +111,7 @@ $app->delete('/api/usuario/{id}', function($request,$response,$args){
 
     $db=new PDO($SGBD, $usuario,$contrasena);
 
-    $sql = "exec pa_eliminar_usuario :id;";
+    $sql = "exec pa_eliminar_usuario :id";
       
    try{
      $resultado = $db->prepare($sql);

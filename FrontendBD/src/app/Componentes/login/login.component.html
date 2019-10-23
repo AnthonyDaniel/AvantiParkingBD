@@ -1,0 +1,41 @@
+<div class="grid-block img-fluid">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mx-auto my-auto ">
+      <form #loginForm=ngForm (ngSubmit)="onSubmit()" class="form-container">
+        <h2 class="text"><strong>SING IN</strong></h2>
+        <br>
+        <div class="alert alert-danger" [hidden]="!error">
+          {{error}}
+        </div>
+        <div class="form-group row">
+          <div class="col-12">
+            <input type="email" name="email" class="form-control" id="inputEmail3" placeholder="Correo"
+             required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-12">
+            <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Contraseña"
+              [(ngModel)]="form.password" required>
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+          <div class="col-12">
+            <button type="submit" class="_btn btn btn-primary btn-block" [disabled]="!loginForm.valid"><strong>SING
+                IN</strong></button>
+          </div>
+        </div>
+        <hr><br>
+        <div class="row justify-content-center">
+          <div class="mx-auto">
+            <a class="text-center decore btn " >Olvidaste tu contraseña?</a>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="mx-auto">
+            <p class="text-center decore btn " routerLink="/user/register">No tienes una cuenta?</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

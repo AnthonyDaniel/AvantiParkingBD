@@ -8,6 +8,7 @@ import { FooterComponent } from './Componentes/footer/footer.component';
 import { LoginComponent } from './Componentes/login/login.component';
 import { RegistrarComponent } from './Componentes/registrar/registrar.component';
 import { PerfilComponent } from './Componentes/perfil/perfil.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PerfilComponent } from './Componentes/perfil/perfil.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

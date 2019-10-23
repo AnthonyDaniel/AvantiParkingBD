@@ -196,4 +196,29 @@ Route::group([
     */
     Route::delete('vehiculo/{id}','Vehiculo@eliminarVehiculo');
     /*------------------------------Fin Vehiculo-------------------------------------- */ 
+    /*------------------------------Reserva     -------------------------------------- */ 
+
+    /*
+    get http://127.0.0.1:8000/api/reserva
+    */
+    Route::get('reserva','Reserva@obtenerReservas');
+
+    /*
+    post http://127.0.0.1:8000/api/reserva
+    {
+        "espacio": "43",
+        "fecha_reserva": "2019-09-01",
+        "hora_inicio": "15:55",
+        "hora_final": "16:55",
+        "usuario": "anthony",
+        "vehiculo": "T823"
+    }
+    */
+    Route::post('reserva','Reserva@guardarVehiculo');
+
+    /*
+    delete http://127.0.0.1:8000/api/reserva/1
+    */
+    Route::delete('reserva/{id}','Reserva@eliminarReserva');
+    /*------------------------------Reserva  FIN-------------------------------------- */ 
 });

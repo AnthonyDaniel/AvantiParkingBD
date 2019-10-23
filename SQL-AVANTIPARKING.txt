@@ -13,10 +13,18 @@ SIZE = 20MB,
 MAXSIZE = 100MB,
 FILEGROWTH = 15%)
 COLLATE Modern_Spanish_CI_AI
-GO
+go
+use AvantiParking
+go
+CREATE USER regUser WITH PASSWORD = '2019'
+CREATE USER adminUser WITH PASSWORD = 'adminBD'
 
-USE AvantiParking
-GO
+ALTER ROLE db_owner ADD MEMBER adminUser;
+ALTER ROLE db_datawriter ADD MEMBER regUser;
+ALTER ROLE db_datareader ADD MEMBER regUser;
+
+use AvantiParking
+go
 CREATE TABLE usuario(/*Se cambio el nombre de la tabla de users a usuario*/
 	username nvarchar(50) NOT NULL,
 	id int NOT NULL UNIQUE,
@@ -45,7 +53,7 @@ CREATE TABLE sede(
 ) 
 GO
 CREATE TABLE parqueo(
-	id_parqueo int NOT NULL,
+	id_parqueo int identity NOT NULL,
 	nombre nvarchar(50) NOT NULL,
 	zona nvarchar(50) NOT NULL,
 	cantidad int NOT NULL,
@@ -139,7 +147,6 @@ create view view_sede
  /*----------------------------INICIO DE parqueo-----------------------------------------------*/
 /* INICIO DEL PROCEDIMIENTO Parqueo AGREGAR */
 create procedure pa_agregar_parqueo
-	@id int,
 	@nombre nvarchar(50),
 	@zona nvarchar(50),
 	@cantidad int,
@@ -149,23 +156,12 @@ as
 declare @resultado int;
 select @resultado = count(*) from sede where id_sede = @sede;
 
-if (@id is null) or (@nombre is null) or (@zona is null) or (@cantidad is null) or (@sede is null) or (@resultado = 0) or (@cantidad = 0) or @comienzo is null
+if (@nombre is null) or (@zona is null) or (@cantidad is null) or (@sede is null) or (@resultado = 0) or (@cantidad = 0) or @comienzo is null
 	return 0;
 else	
 begin	
-	insert into parqueo (id_parqueo,nombre,zona,cantidad,comienzo,sede)
-	values (@id,@nombre,@zona,@cantidad,@comienzo,@sede);	
-
-	declare @cant int;
-	set @cant = 0;
-
-	WHILE @cant < @cantidad
-	BEGIN
-		insert into espacio (nombre,estado,tipo_espacio,parqueo)
-		values (@comienzo,0,'Regular',@id);	
-	SET @cant = @cant + 1;
-	SET @comienzo = @comienzo + 1;
-	END;
+	insert into parqueo (nombre,zona,cantidad,comienzo,sede)
+	values (@nombre,@zona,@cantidad,@comienzo,@sede);	
 	return 1
 end
  go
@@ -377,3 +373,129 @@ create view view_vehiculo
  from vehiculo inner join usuario on usuario.username = vehiculo.usuario;
  /*----------------------------FIN DE VEHICULO-----------------------------------------------*/
  go
+
+ /* INICIO DEL PROCEDIMIENTO RESERVA AGREGAR */
+use AvantiParking
+go
+create procedure pa_agregar_reserva
+	@id_reserva int,
+	@espacio int,
+	@fecha_reserva date,
+	@hora_inicio time(7),
+	@hora_final time(7),
+	@usuario nvarchar(50),
+	@vehiculo nvarchar(50)
+
+as
+
+if (@id_reserva is null) or (@espacio is null) or (@fecha_reserva is null)
+or (@hora_inicio is null) or (@hora_final is null) or (@usuario is null) or (@vehiculo is null)
+	return 0;
+else	
+begin	
+	insert into reserva (id_reserva,espacio,fecha_reserva,hora_inicio,hora_final,usuario,vehiculo)
+	values (@id_reserva,@espacio,@fecha_reserva,@hora_inicio,@hora_final,@usuario,@vehiculo);	
+	return 1
+end
+ go
+
+/* INICIO DEL PROCEDIMIENTO RESERVA ACTUALIZAR */
+create procedure pa_actualizar_reserva
+	@id_reserva int,
+	@espacio int,
+	@fecha_reserva date,
+	@hora_inicio time(7),
+	@hora_final time(7),
+	@usuario nvarchar(50),
+	@vehiculo nvarchar(50)
+as
+if (@id_reserva is null) or (@espacio is null) or (@fecha_reserva is null) or (@hora_inicio is null) or (@hora_final is null) or (@usuario is null) or (@vehiculo is null)
+	return 0;	
+else	
+begin	
+	update reserva set espacio=@espacio, fecha_reserva=@fecha_reserva,
+	hora_inicio=@hora_inicio,hora_final=@hora_final,usuario=@usuario,vehiculo=@vehiculo
+	where id_reserva = @id_reserva;
+	return 1;
+end
+ go
+/* INICIO DEL PROCEDIMIENTO RESERVA ELIMINAR */
+create procedure pa_eliminar_reserva
+	@id_reserva int
+as
+declare @resultado int;
+select @resultado = count(*) from reserva where id_reserva= @id_reserva;
+if (@id_reserva is null) or @resultado <> 1
+	return 0;
+else	
+begin	
+	delete from reserva where id_reserva = @id_reserva
+	return 1
+end
+go
+/*INICIO DE LA VISTA DE RESERVA*/
+create view vista_reserva
+ as 
+ select reserva.id_reserva as NumReserva, reserva.espacio as Espacio, reserva.fecha_reserva as Fecha, reserva.hora_inicio as HoraInicial, 
+ reserva.hora_final as HoraFinal, usuario.id as Usuario, vehiculo.placa as Vehiculo
+ from reserva inner join usuario on usuario.username = reserva.usuario inner join vehiculo on vehiculo.placa = reserva.vehiculo;
+
+ go
+ /*FINAL DE LAS RESERVAS */
+
+ /* Insertar espacio */
+create trigger dis_insertar_espacio
+	on espacio
+	for insert
+as
+	declare @quantity int
+	declare @idParqueo int
+	select @idParqueo = parqueo from inserted
+	select @quantity = cantidad from parqueo where id_parqueo = @idParqueo
+	set @quantity = @quantity + 1
+	update parqueo set cantidad = @quantity where id_parqueo =@idParqueo;
+	
+/*Fin del trigger espacio */
+/*Crear parqueos */
+go
+create trigger dis_crear_espacios_parqueo
+	on parqueo
+	for insert
+as
+	declare @quantity int
+	declare @contador int 
+	declare @idParqueo int
+	declare @beginFrom int
+	select @idParqueo = id_parqueo, @quantity = cantidad, @beginFrom = comienzo from inserted
+	set @contador = @beginFrom
+	while @contador < (@quantity + @beginFrom)
+	begin
+		insert into espacio(nombre,estado,tipo_espacio,parqueo) values (@contador,0,'regular',@idParqueo)
+		set @contador = @contador + 1
+	end
+/*FINAL DEL TRIGGER CREAR ESPACIO */
+GO
+/*ELIMINAR ESPACIO */
+create trigger dis_eliminar_espacio
+	on espacio
+	for delete
+as
+	declare @quantity int
+	declare @contador int 
+	declare @idParqueo int
+	select @contador = count(*) from deleted
+	select @idParqueo = parqueo from deleted
+	select @quantity = cantidad from parqueo where id_parqueo = @idParqueo
+	if @contador = 1
+	begin
+		set @quantity = @quantity - 1
+		print(@quantity)
+		update parqueo set cantidad = @quantity where id_parqueo =@idParqueo;
+	end
+	else
+	begin
+		set @quantity = @quantity - @contador
+		print(@quantity)
+		update parqueo set cantidad = @quantity where id_parqueo =@idParqueo;
+	end
+/*FINAL ELIMINAR ESPACIO */

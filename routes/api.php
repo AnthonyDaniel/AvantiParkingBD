@@ -7,6 +7,7 @@ Route::group([
     'middleware' => 'api',
 
 ], function ($router) {
+    /*----------------------------------------------------------USUARIO-------------------------------------------- */
     /*
      Get http://127.0.0.1:8000/api/usuario
     */
@@ -40,6 +41,41 @@ Route::group([
     }
     */
     Route::put('usuario/{id}','Usuario@editarUsuario');
-    Route::put('usuariotipo/{id}','Usuario@editarUsuarioTipo');
 
+    /*
+    Put http://127.0.0.1:8000/api/usuariotipo/604550257
+    {
+        "tipo" : 1
+    }
+     */
+    Route::put('usuariotipo/{id}','Usuario@editarUsuarioTipo');
+    /*-------------------------------------------------------FIN USUARIO------------------------------------------- */
+    /*----------------------------------------------------------SEDE-------------------------------------------- */
+    
+    /*
+    Get http://127.0.0.1:8000/api/sede
+     */
+    Route::get('sede','Sede@obtenerSedes');
+    /*
+    Post http://127.0.0.1:8000/api/sede
+    {
+    	"nombre":"N",
+    	"direccion":12
+    }
+    */
+    Route::post('sede','Sede@guardarSedes');
+
+    /*
+    Put http://127.0.0.1:8000/api/sede/1
+    {
+    	"nombre":"N",
+    	"direccion":12
+    }
+    */
+    Route::put('sede/{id}','Sede@editarSedes');
+    
+    /*
+    Delete http://127.0.0.1:8000/api/sede/1
+    */
+    Route::delete('sede/{id}','Sede@eliminarSedes');
 });

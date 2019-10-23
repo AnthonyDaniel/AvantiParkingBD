@@ -44,7 +44,6 @@ class Usuario extends Controller
 
             try{
                 $data = DB::table('usuario')->select('id')->where('id', '=', $id)->first();
-      
                 if($id!=null && $nombre!=null && $direccion!=null && $telefono!=null && $contrasena!=null){
                     if($data!=null){
                         DB::insert("exec pa_actualizar_usuario ".$id.",'".$nombre."','".$direccion."',".$telefono.",'".$contrasena."'");
@@ -61,8 +60,23 @@ class Usuario extends Controller
     }
 
     public function editarUsuarioTipo($id, Request $request){
+        $tipo = $request->tipo;
 
-        
+            try{
+                $data = DB::table('usuario')->select('id')->where('id', '=', $id)->first();
+                if($id!=null && $nombre!=null && $direccion!=null && $telefono!=null && $contrasena!=null){
+                    if($data!=null){
+                        DB::insert("exec pa_actualizar_usuario_tipo ".$id.",".$tipo."");
+                        return  response()->json(['data' => 'Usuario modifico correctamente'], 200);
+                    }else{
+                        return  response()->json(['error' => 'El usuario no existe'], 406);
+                    }
+                }else {
+                    return  response()->json(['error' => 'Faltan datos'], 406);
+                }
+            }catch(\Illuminate\Database\QueryException $e){
+                return  response()->json(['error' => $e], 406);
+            }
     }
 
     public function eliminarUsuario($id){

@@ -138,7 +138,7 @@ end
 /*INICIO DE LA VISTA DE SEDE*/
 create view view_sede
  as 
- select id_sede as ID, nombre as Nombre, direccion as Direccion
+ select id_sede, nombre, direccion
  from sede;
  /*----------------------------FIN DE SEDES-----------------------------------------------*/
  go
@@ -201,7 +201,7 @@ end
 /*INICIO DE LA VISTA DE espacio*/
 create view view_parqueo
  as 
- select id_parqueo as ID, parqueo.nombre as Nombre, zona as Zona, cantidad as Cantidad, comienzo as Comienzo, sede.id_sede as SedeID, sede.nombre as SedeNombre
+ select id_parqueo, parqueo.nombre, zona, cantidad, comienzo, sede.id_sede, sede.nombre as sede
  from parqueo inner join sede on sede.id_sede = parqueo.sede;
  /*----------------------------FIN DE Parqueos-----------------------------------------------*/
  go
@@ -254,7 +254,7 @@ end
 /*INICIO DE LA VISTA DE espacio*/
 create view view_espacio
  as 
- select espacio.id_espacio as ID, espacio.nombre as Nombre, espacio.tipo_espacio as Tipo, espacio.estado as Estado, parqueo.id_parqueo as ParqueoID, parqueo.nombre as ParqueoNombre
+ select espacio.id_espacio, espacio.nombre, espacio.tipo_espacio, espacio.estado, parqueo.id_parqueo, parqueo.nombre as parqueo
  from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo;
  /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
  go
@@ -277,6 +277,7 @@ begin
 	values (@username,@id,@nombre,@direccion,@telefono,@contrasena);	
 	return 1
 end
+go
  go
 /* INICIO DEL PROCEDIMIENTO USUARIO ACTUALIZAR */
 create procedure pa_actualizar_usuario
@@ -284,19 +285,31 @@ create procedure pa_actualizar_usuario
 	@nombre nvarchar(50),
 	@direccion nvarchar(50),
 	@telefono int,
-	@tipo tinyint,
 	@contrasena nvarchar(50)
 as
-if (@nombre is null) or (@id is null) or (@nombre is null) or (@direccion is null) or (@telefono is null) or (@tipo is null) or (@contrasena is null)
+if (@nombre is null) or (@id is null) or (@nombre is null) or (@direccion is null) or (@telefono is null) or (@contrasena is null)
 	return 0;
 else	
 begin	
-	update usuario set nombre=@nombre,direccion=@direccion, telefono = @telefono, tipo = @tipo,contrasena = @contrasena
+	update usuario set nombre=@nombre,direccion=@direccion, telefono = @telefono,contrasena = @contrasena
 	where id = @id;
 	return 1
 end
  go
-
+ /* INICIO DEL PROCEDIMIENTO USUARIO ACTUALIZAR ADMIN */
+create procedure pa_actualizar_usuario_tipo
+	@id int,
+	@tipo tinyint
+as
+if (@id is null) or (@tipo is null)
+	return 0;
+else	
+begin	
+	update usuario set tipo = @tipo
+	where id = @id;
+	return 1
+end
+ go
 /* INICIO DEL PROCEDIMIENTO USUARIO ELIMINAR */
 create procedure pa_eliminar_usuario
 	@id int
@@ -314,7 +327,7 @@ end
 /*INICIO DE LA VISTA DE USUARIO*/
 create view view_usuario
  as 
- select usuario.username as Usuario, usuario.id as ID, usuario.nombre as Nombre, usuario.tipo as Tipo, usuario.telefono as Telefono,usuario.direccion as Direccion 
+ select usuario.username, usuario.id, usuario.nombre, usuario.tipo, usuario.telefono,usuario.direccion 
  from usuario
  /*----------------------------FIN DE USUARIO-----------------------------------------------*/
  go
@@ -369,7 +382,7 @@ end
 /*INICIO DE LA VISTA DE Vehiculo*/
 create view view_vehiculo
  as 
- select vehiculo.placa as Placa, vehiculo.marca as Marca, vehiculo.modelo as Modelo, usuario.username as Usuario
+ select vehiculo.placa, vehiculo.marca, vehiculo.modelo, usuario.username
  from vehiculo inner join usuario on usuario.username = vehiculo.usuario;
  /*----------------------------FIN DE VEHICULO-----------------------------------------------*/
  go
@@ -436,8 +449,8 @@ go
 /*INICIO DE LA VISTA DE RESERVA*/
 create view vista_reserva
  as 
- select reserva.id_reserva as NumReserva, reserva.espacio as Espacio, reserva.fecha_reserva as Fecha, reserva.hora_inicio as HoraInicial, 
- reserva.hora_final as HoraFinal, usuario.id as Usuario, vehiculo.placa as Vehiculo
+ select reserva.id_reserva, reserva.espacio, reserva.fecha_reserva, reserva.hora_inicio, 
+ reserva.hora_final, usuario.id, vehiculo.placa
  from reserva inner join usuario on usuario.username = reserva.usuario inner join vehiculo on vehiculo.placa = reserva.vehiculo;
 
  go

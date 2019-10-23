@@ -161,8 +161,39 @@ Route::group([
 
     /*
     Delete http://127.0.0.1:8000/api/espacio/1
-
     */
     Route::delete('espacio/{id}','Espacio@eliminarEspacios');
     /*------------------------------Fin Espacio--------------------------------------- */ 
+    /*------------------------------Vehiculo   --------------------------------------- */ 
+
+    /*
+    get http://127.0.0.1:8000/api/vehiculo
+    */
+    Route::get('vehiculo','Vehiculo@obtenerVehiculos');
+
+    /*
+    post http://127.0.0.1:8000/api/vehiculo
+    {
+        "placa": "T823",
+        "marca": "Toyota",
+        "modelo":"4R",
+        "usuario":"anthony"
+    }
+    */
+    Route::post('vehiculo','Vehiculo@guardarVehiculo');
+
+    /*
+    put http://127.0.0.1:8000/api/vehiculo/T823
+    {
+        "marca": "Toyota",
+        "modelo":"4R"
+    }
+    */
+    Route::put('vehiculo/{id}','Vehiculo@editarVehiculo');
+
+    /*
+    delete http://127.0.0.1:8000/api/vehiculo/T823
+    */
+    Route::delete('vehiculo/{id}','Vehiculo@eliminarVehiculo');
+    /*------------------------------Fin Vehiculo-------------------------------------- */ 
 });

@@ -115,6 +115,54 @@ Route::group([
     /*------------------------------Fin de los parqueos ------------------------------ */ 
     /*------------------------------Espacio------------ ------------------------------ */ 
 
-    
+    /*
+    Get http://127.0.0.1:8000/api/espacio
+    */
+    Route::get('espacio','Espacio@obtenerEspacios');
+
+    /*
+    Get http://127.0.0.1:8000/api/espacio_disponible
+    */
+    Route::get('espacio_disponible','Espacio@obtenerEspaciosDisponibles');
+
+    /*
+    Get http://127.0.0.1:8000/api/espacio_no_disponible
+    */
+    Route::get('espacio_no_disponible','Espacio@obtenerEspaciosNoDisponibles');
+
+    /*
+    Get http://127.0.0.1:8000/api/espacio_regular
+    */
+    Route::get('espacio_regular','Espacio@obtenerEspaciosRegular');
+
+    /*
+    Get http://127.0.0.1:8000/api/espacio_especial
+    */
+    Route::get('espacio_especial','Espacio@obtenerEspaciosEspecial');
+
+    /*
+    Post http://127.0.0.1:8000/api/espacio
+    {
+        "nombre": 1,
+        "parqueo": 1
+    }
+    */
+    Route::post('espacio','Espacio@guardarEspacio');
+
+    /*
+    Put http://127.0.0.1:8000/api/espacio/1
+      {
+        "nombre": 100,
+        "estado": 1,
+        "tipo_espacio":"especial"
+    }
+    */
+    Route::put('espacio/{id}','Espacio@editarEspacio');
+
+    /*
+    Delete http://127.0.0.1:8000/api/espacio/1
+
+    */
+    Route::delete('espacio/{id}','Espacio@eliminarEspacios');
     /*------------------------------Fin Espacio--------------------------------------- */ 
 });

@@ -37,9 +37,9 @@ CREATE TABLE usuario(/*Se cambio el nombre de la tabla de users a usuario*/
 )
 GO
 CREATE TABLE vehiculo(
-	placa varchar(255) NOT NULL,
-	marca varchar(255) NOT NULL,
-	modelo varchar(255) NOT NULL,
+	placa varchar(50) NOT NULL,
+	marca varchar(50) NOT NULL,
+	modelo varchar(50) NOT NULL,
 	usuario nvarchar(50) NOT NULL, /*Se cambio el nombre del atributo de users a usuario*/
 	CONSTRAINT Pk_vehiculo PRIMARY KEY (placa),
 	CONSTRAINT FK_vehiculo_usuario FOREIGN KEY (usuario) REFERENCES Usuario(username)
@@ -80,7 +80,7 @@ CREATE TABLE reserva(
 	hora_final time(7) NOT NULL,
 	hora_inicio time(7) NOT NULL,
 	usuario nvarchar(50) NOT NULL, /*Se cambio el nombre del atributo de users a usuario*/
-	vehiculo varchar(255) NOT NULL,
+	vehiculo varchar(50) NOT NULL,
 	CONSTRAINT PK_reserva PRIMARY KEY (id_reserva),
 	CONSTRAINT FK_reserva_usuario FOREIGN KEY (usuario) REFERENCES Usuario(username),
 	CONSTRAINT FK_reserva_vehiculo FOREIGN KEY (vehiculo) REFERENCES Vehiculo(placa),
@@ -259,6 +259,35 @@ create view view_espacio
  /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
  go
 
+ create view view_espacio_disponibles
+ as 
+ select espacio.id_espacio, espacio.nombre, espacio.tipo_espacio, espacio.estado, parqueo.id_parqueo, parqueo.nombre as parqueo
+ from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo where espacio.estado <> 1;
+ /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
+ go
+
+ create view view_espacio_no_disponibles
+ as 
+ select espacio.id_espacio, espacio.nombre, espacio.tipo_espacio, espacio.estado, parqueo.id_parqueo, parqueo.nombre as parqueo
+ from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo where espacio.estado = 1;
+ /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
+ go
+
+ create view view_espacio_tipo_regular
+ as 
+ select espacio.id_espacio, espacio.nombre, espacio.tipo_espacio, espacio.estado, parqueo.id_parqueo, parqueo.nombre as parqueo
+ from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo where espacio.tipo_espacio = 'regular';
+ /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
+ go
+
+ create view view_espacio_tipo_especial
+ as 
+ select espacio.id_espacio, espacio.nombre, espacio.tipo_espacio, espacio.estado, parqueo.id_parqueo, parqueo.nombre as parqueo
+ from espacio inner join parqueo on parqueo.id_parqueo = espacio.parqueo where espacio.tipo_espacio = 'especial';
+ /*----------------------------FIN DE ESPACIO-----------------------------------------------*/
+ go
+
+
   /*----------------------------INICIO DE USUARIO-----------------------------------------------*/
 /* INICIO DEL PROCEDIMIENTO USUARIO AGREGAR */
 create procedure pa_agregar_usuario
@@ -327,16 +356,16 @@ end
 /*INICIO DE LA VISTA DE USUARIO*/
 create view view_usuario
  as 
- select usuario.username, usuario.id, usuario.nombre, usuario.tipo, usuario.telefono,usuario.direccion 
+ select usuario.username, usuario.id, usuario.nombre, usuario.tipo, usuario.telefono,usuario.direccion,usuario.contrasena 
  from usuario
  /*----------------------------FIN DE USUARIO-----------------------------------------------*/
  go
  /*----------------------------INICIO DE USUARIO-----------------------------------------------*/
 /* INICIO DEL PROCEDIMIENTO USUARIO AGREGAR */
 create procedure pa_agregar_vehiculo
-	@placa varchar(255),
-	@marca varchar(255),
-	@modelo varchar(255),
+	@placa varchar(50),
+	@marca varchar(50),
+	@modelo varchar(50),
 	@usuario nvarchar(50)
 as
 if (@placa is null) or (@marca is null) or (@modelo is null) or (@usuario is null)
@@ -350,16 +379,15 @@ end
  go
 /* INICIO DEL PROCEDIMIENTO USUARIO ACTUALIZAR */
 create procedure pa_actualizar_vehiculo
-	@placa varchar(255),
-	@marca varchar(255),
-	@modelo varchar(255),
-	@usuario nvarchar(50)
+	@placa varchar(50),
+	@marca varchar(50),
+	@modelo varchar(50)
 as
-if (@placa is null) or (@marca is null) or (@modelo is null) or (@usuario is null)
+if (@placa is null) or (@marca is null) or (@modelo is null)
 	return 0;
 else	
 begin	
-	update vehiculo set marca=@marca,modelo=@modelo, usuario = @usuario
+	update vehiculo set marca=@marca,modelo=@modelo
 	where placa = @placa;
 	return 1
 end
@@ -391,7 +419,6 @@ create view view_vehiculo
 use AvantiParking
 go
 create procedure pa_agregar_reserva
-	@id_reserva int,
 	@espacio int,
 	@fecha_reserva date,
 	@hora_inicio time(7),
@@ -401,35 +428,14 @@ create procedure pa_agregar_reserva
 
 as
 
-if (@id_reserva is null) or (@espacio is null) or (@fecha_reserva is null)
+if  (@espacio is null) or (@fecha_reserva is null)
 or (@hora_inicio is null) or (@hora_final is null) or (@usuario is null) or (@vehiculo is null)
 	return 0;
 else	
 begin	
-	insert into reserva (id_reserva,espacio,fecha_reserva,hora_inicio,hora_final,usuario,vehiculo)
-	values (@id_reserva,@espacio,@fecha_reserva,@hora_inicio,@hora_final,@usuario,@vehiculo);	
+	insert into reserva (espacio,fecha_reserva,hora_inicio,hora_final,usuario,vehiculo)
+	values (@espacio,@fecha_reserva,@hora_inicio,@hora_final,@usuario,@vehiculo);	
 	return 1
-end
- go
-
-/* INICIO DEL PROCEDIMIENTO RESERVA ACTUALIZAR */
-create procedure pa_actualizar_reserva
-	@id_reserva int,
-	@espacio int,
-	@fecha_reserva date,
-	@hora_inicio time(7),
-	@hora_final time(7),
-	@usuario nvarchar(50),
-	@vehiculo nvarchar(50)
-as
-if (@id_reserva is null) or (@espacio is null) or (@fecha_reserva is null) or (@hora_inicio is null) or (@hora_final is null) or (@usuario is null) or (@vehiculo is null)
-	return 0;	
-else	
-begin	
-	update reserva set espacio=@espacio, fecha_reserva=@fecha_reserva,
-	hora_inicio=@hora_inicio,hora_final=@hora_final,usuario=@usuario,vehiculo=@vehiculo
-	where id_reserva = @id_reserva;
-	return 1;
 end
  go
 /* INICIO DEL PROCEDIMIENTO RESERVA ELIMINAR */

@@ -73,9 +73,48 @@ Route::group([
     }
     */
     Route::put('sede/{id}','Sede@editarSedes');
-    
+
     /*
     Delete http://127.0.0.1:8000/api/sede/1
     */
     Route::delete('sede/{id}','Sede@eliminarSedes');
+
+    /*-------------------------------Parqueos---------------------------------------- */
+
+    /*
+    Get http://127.0.0.1:8000/api/parqueo
+    */
+    Route::get('parqueo','Parqueo@obtenerParqueos');
+    /*
+    Post http://127.0.0.1:8000/api/parqueo
+        {
+        "nombre": "PatioB",
+        "zona": "AB",
+        "cantidad": "20",
+        "comienzo": "10",
+        "sede": "1"
+    }
+    */
+    Route::post('parqueo','Parqueo@guardarParqueo');
+
+    /*
+    Put http://127.0.0.1:8000/api/parqueo/1
+    {
+        "nombre": "PatioBb",
+        "zona": "ABb",
+        "sede": "2"
+    }
+    */
+    Route::put('parqueo/{id}','Parqueo@editarParqueo');
+
+    /*
+    delete http://127.0.0.1:8000/api/parqueo/1
+
+    */
+    Route::delete('parqueo/{id}','Parqueo@eliminarParqueos');
+    /*------------------------------Fin de los parqueos ------------------------------ */ 
+    /*------------------------------Espacio------------ ------------------------------ */ 
+
+    
+    /*------------------------------Fin Espacio--------------------------------------- */ 
 });

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/Servicios/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
     contrasena: null
   };
 
-  constructor(public u:UsuarioService) { }
+  constructor(public u:UsuarioService, public auth:AuthService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -48,6 +50,12 @@ export class LoginComponent implements OnInit {
     });
     this.form.username = '';
     this.form.contrasena = '';
+  }else{
+    this.router.navigateByUrl('/perfil');
+    this.auth.changeAuthStatus(true);
+    if(localStorage.getItem("tipo") == '1'){
+      this.auth.changeAdminStatus(true);
+    }
   }
   }
 }

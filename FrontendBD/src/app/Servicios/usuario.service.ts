@@ -13,5 +13,10 @@ export class UsuarioService {
   public obtenerUsuarios() {
     return this.http.get(`${this.baseUrl}`)
   }
-
+  public modificarUsuario(data){
+    return this.http.put(`${this.baseUrl}/${data.id}`,data)
+  }
+  public eliminar(data){
+    return this.http.delete(`${this.baseUrl}/${data.id}`)
+  }
 }

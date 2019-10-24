@@ -6,9 +6,9 @@ import { PerfilComponent } from './Componentes/perfil/perfil.component';
 import { BeforeLoginService } from './Servicios/before-login.service';
 import { AfterLoginService } from './Servicios/after-login.service';
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
-  { path: 'registrar', component: RegistrarComponent},
-  { path: 'perfil', component: PerfilComponent},
+  { path: 'login', component: LoginComponent, canActivate: [BeforeLoginService]},
+  { path: 'registrar', component: RegistrarComponent,canActivate: [BeforeLoginService]},
+  { path: 'perfil', component: PerfilComponent ,canActivate: [AfterLoginService]},
 ];
 
 @NgModule({

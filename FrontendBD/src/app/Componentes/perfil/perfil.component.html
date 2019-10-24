@@ -1,26 +1,13 @@
 <div class="container">
     <div class="jumbotron border">
-      <h2 class="text title text-center"><strong>PROFILE</strong></h2>
-    </div>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status=='error'">
-      {{error}}
-      <button type="button" class="close" aria-label="Close" id="alertError" (click)="dismissError()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status=='success'">
-      {{success}}
-      <button type="button" class="close" aria-label="Close" id="alertSuccess" (click)="dismissSuccess()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
- 
+      <h2 class="text title text-center"><strong>PERFIL</strong></h2>
+    </div> 
       <div class=" mb-3">
         <label class="text" for="firstName"><strong>NOMBRE</strong></label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="nombre" [(ngModel)]="dataUser.nombre" placeholder="" readonly>
+          <input type="text" class="form-control" name="nombre" [(ngModel)]="dataUser.nombre" placeholder="">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary material-icons" type="button" data-toggle="modal"
+            <button class="btn btn-outline-secondary material-icons" (click)="modificarNombre()" type="button" data-toggle="modal"
               data-target="#ModifyName">create</button>
           </div>
         </div>
@@ -30,16 +17,16 @@
     <div class="mb-3">
       <label class="text" for="email"><strong>NOMBRE DE USUARIO</strong></label>
       <div class="input-group mb-3">
-        <input type="email" class="form-control" name="nombreUsuario" [(ngModel)]="dataUser.nombreUsuario" readonly>
+        <input type="email" class="form-control" name="nombreUsuario" [(ngModel)]="dataUser.username" readonly>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <label class="text" for="country"><strong>DIRECCION</strong></label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="direccion" [(ngModel)]="dataUser.direccion" readonly>
+          <input type="text" class="form-control" name="direccion" [(ngModel)]="dataUser.direccion">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary material-icons" type="button" data-toggle="modal"
+            <button class="btn btn-outline-secondary material-icons"  (click)="modificarDireccion()" type="button" data-toggle="modal"
               data-target="#ModifyAddress">create</button>
           </div>
         </div>
@@ -47,9 +34,9 @@
       <div class="col-md-6">
         <label class="text" for="Phone"><strong>TELEFONO</strong></label>
         <div class="input-group mb-3">
-          <input type="phone" class="form-control" id="telefono" name="telefono" [(ngModel)]="dataUser.telefono" readonly>
+          <input type="number" class="form-control" id="telefono" name="telefono" [(ngModel)]="dataUser.telefono">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary material-icons" type="button" data-toggle="modal"
+            <button class="btn btn-outline-secondary material-icons" (click)="modificarTelefono()" type="button" data-toggle="modal"
               data-target="#ModifyPhone">create</button>
           </div>
         </div>
@@ -57,13 +44,7 @@
     </div>
     <div class="row justify-content-center">
       <div class="mx-auto">
-        <p class="text-center decore btn " data-toggle="modal" data-target="#ChangePassword"
-         >Deseas cambiar tu contraseña?</p>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="mx-auto">
-        <p class="text-center decore btn text-color" data-toggle="modal" data-target="#DeleteAccount">Quieres eliminar tu cuenta?
+        <p class="text-center decore btn text-color" data-toggle="modal" (click)="eliminar()" data-target="#DeleteAccount">Quieres eliminar tu cuenta?
         </p>
       </div>
     </div>

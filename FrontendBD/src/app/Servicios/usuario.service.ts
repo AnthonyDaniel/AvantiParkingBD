@@ -19,4 +19,7 @@ export class UsuarioService {
   public eliminar(data){
     return this.http.delete(`${this.baseUrl}/${data.id}`)
   }
+  public guardar(data){
+    return this.http.post(`${this.baseUrl}`,data)
+  }
 }

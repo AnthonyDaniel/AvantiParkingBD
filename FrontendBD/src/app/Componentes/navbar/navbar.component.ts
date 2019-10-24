@@ -18,6 +18,16 @@ export class NavbarComponent implements OnInit {
     this.navbarOpen = !this.navbarOpen;
   }
   ngOnInit() {
+    if(localStorage.getItem('tipo') == '1'){
+      this.auth.changeAdminStatus(true);
+    }else{
+      this.auth.changeAdminStatus(false);
+    }
+    if(localStorage.getItem('usuario') == null || localStorage.getItem('usuario') == ''){
+      this.auth.changeAuthStatus(false);
+    }else{
+      this.auth.changeAuthStatus(false);
+    }
     this.auth.authStatus.subscribe(value=> this.loggedIn = value);
     this.auth.adminStatus.subscribe(value=> this.admin = value);
   }

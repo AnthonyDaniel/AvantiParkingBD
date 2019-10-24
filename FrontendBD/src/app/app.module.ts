@@ -10,6 +10,7 @@ import { RegistrarComponent } from './Componentes/registrar/registrar.component'
 import { PerfilComponent } from './Componentes/perfil/perfil.component';
 import { HttpClientModule } from '@angular/common/http';
 import { VehiculoComponent } from './Componentes/vehiculo/vehiculo.component';
+import { AdministradorComponent } from './Componentes/administrador/administrador.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { VehiculoComponent } from './Componentes/vehiculo/vehiculo.component';
     LoginComponent,
     RegistrarComponent,
     PerfilComponent,
-    VehiculoComponent
+    VehiculoComponent,
+    AdministradorComponent
   ],
   imports: [
     BrowserModule,

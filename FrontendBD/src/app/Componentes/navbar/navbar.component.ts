@@ -26,8 +26,9 @@ export class NavbarComponent implements OnInit {
     if(localStorage.getItem('usuario') == null || localStorage.getItem('usuario') == ''){
       this.auth.changeAuthStatus(false);
     }else{
-      this.auth.changeAuthStatus(false);
+      this.auth.changeAuthStatus(true);
     }
+
     this.auth.authStatus.subscribe(value=> this.loggedIn = value);
     this.auth.adminStatus.subscribe(value=> this.admin = value);
   }

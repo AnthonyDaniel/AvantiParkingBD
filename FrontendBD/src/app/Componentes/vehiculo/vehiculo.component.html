@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="jumbotron border">
+      <h1 class="text title text-center"><strong>VEHICULO</strong></h1>
+  
+    </div>
+    <form #registrarVehiculoForm=ngForm (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-3 ml-auto">
+          <label class="text" for="lastName"><strong>PLACA</strong></label>
+          <input type="text" class="form-control" name="placa" [(ngModel)]="form.placa" required>
+        </div>
+        <div class="col-md-3 mx-auto">
+          <label class="text" for="lastName"><strong>MARCA</strong></label>
+          <input type="text" class="form-control" name="marca" [(ngModel)]="form.marca" required>
+        </div>
+        <div class="col-md-3 mr-auto">
+          <label class="text" for="lastName"><strong>MODELO</strong></label>
+          <input type="text" class="form-control" name="modelo" [(ngModel)]="form.modelo" required>
+        </div>
+      </div><br>
+      <div class="text-center">
+        <button type="submit" class="btn btn-outline-primary " [disabled]="!registrarVehiculoForm.valid"><strong>AGREGAR
+            VEHICLE</strong></button>
+      </div>
+    </form>
+  
+    <br>
+    <hr><br>
+  
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="status=='error'">
+      {{error}}
+      <button type="button" class="close" aria-label="Close" id="alertError" (click)="dismissError()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="status=='success'">
+      {{success}}
+      <button type="button" class="close" aria-label="Close" id="alertSuccess" (click)="dismissSuccess()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <div>
+      <h4 class="text" class="text text-center"><strong>VEHICULOS</strong></h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover  ">
+          <thead class="thead">
+            <tr>
+              <th>PLACA</th>
+              <th>MARCA</th>
+              <th>MODELO</th>
+              <th>EDITAR</th>
+              <th>ELIMINAR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vehiculo of vehiculos">
+              <td><input type="text" class="form-control" disabled [(ngModel)]="vehicle.placa"></td>
+              <td><input type="text" class="form-control" [(ngModel)]="vehicle.marca"></td>
+              <td><input type="text" class="form-control" [(ngModel)]="vehicle.modelo"></td>
+              <td><button (click)="editar(vehiculo)" class="btn btn-success">EDITAR</button></td>
+              <td><button (click)="eliminar(vehiculo)" class="btn btn-danger">ELIMINAR</button></td>
+  
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </div><br>

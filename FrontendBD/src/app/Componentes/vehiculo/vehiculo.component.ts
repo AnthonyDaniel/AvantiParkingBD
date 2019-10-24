@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VehiculoService } from 'src/app/Servicios/vehiculo.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-vehiculo',
@@ -17,7 +18,7 @@ export class VehiculoComponent implements OnInit {
   public vehicles;
   public urlImg;
 
-  constructor(  private vehiculo: VehiculoService,) { }
+  constructor(  private vehiculo: VehiculoService) { }
   public error: String;
   public success: String;
   public status: String;
@@ -43,10 +44,75 @@ export class VehiculoComponent implements OnInit {
 
   
   listar() {
-   
+    this.vehiculo.listarVehiculo().subscribe(
+      data => {
+        this.vehiculo = data;
+      },
+      error => {
+        Swal.fire({
+          type: 'error',
+          title: 'Error del sistema',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    );
   }
- 
+  guardarVehiculo(){
+    this.vehiculo.guardarVehiculo(this.form).subscribe(
+      data=>{
+        Swal.fire({
+          type: 'success',
+          title: 'Vehiculo creado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        
+      },
+      error=>{
+        Swal.fire({
+          type: 'error',
+          title: 'El vehiculo no puede ser creado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    );
+  
+    
+  
+  }
+  eliminarVehiculo(_formBehiculo){
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        cancelButton: 'btn btn-secondary'
+      },
+      buttonsStyling: false
+    })
 
+    Swal.fire({
+      title: 'Esta segur de eliminar?',
+      text: "No volveras a la  recuperar esta informacion ni relacionada con ella!!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#EF4023',
+      confirmButtonText: 'Eliminar!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.vehiculo.eliminarVehiculo(_formVehiculo).subscribe(
+          data => {
+            this.ngOnInit();
+            Swal.fire(
+              'Eliminado!',
+              'Vehiculo eliminado.',
+              'success'
+            )
+          }
+        )
+      }
+    })
+  }
   responseSuccess(data) {
     this.success = data.data;
     this.status = "success";

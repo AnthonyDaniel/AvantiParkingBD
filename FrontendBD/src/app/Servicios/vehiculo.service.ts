@@ -14,7 +14,12 @@ export class VehiculoService {
     this.http.get(`${this.baseUrl}`);
   }
   public guardarVehiculo(data){
-    this.http.post(`${this.baseUrl}/vehiculo`, data);
+    this.http.post(`${this.baseUrl}/`, data);
   }
-
+  public modificarVehiculo(data){
+    return this.http.put(`${this.baseUrl}/${data.id}`,data)
+  }
+  public eliminarVehiculo(data){
+    return this.http.delete(`${this.baseUrl}/${data.id}`)
+  }
 }

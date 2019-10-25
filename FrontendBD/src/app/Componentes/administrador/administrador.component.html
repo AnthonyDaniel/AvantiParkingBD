@@ -1,7 +1,261 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<p>administrador works!</p>
+<div class="container">
+    <!--ADMIN USERES !!!!-->
+    <div class="adminUser">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">USUARIOS</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">USUARIOS</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn1 btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <strong>AGREGAR USUARIOS</strong>
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="filterUsers" placeholder="Buscar...">
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-responsive">
+            <thead class="thead">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">USERNAME</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">ADMINISTRADOR</th>
+                    <th scope="col">ELIMINAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" disabled></td>
+                    <td><input type="text" class="form-control" disabled></td>
+                    <td><input type="text" class="form-control" disabled></td>
+                    <td>
+                        <button class="btn btn-success">ADMINISTRADOR</button>
+                        <button class="btn btn-danger">REGULAR</button>
+                    </td>
+                    <td><button class="btn btn-danger">ELIMINAR</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--FIN ADMIN USERES !!!!-->
+    <hr>
+    <!--ADMIN HEADQUARTERS !!!!-->
+    <div class="adminHeadquarters">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">SEDES</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">SEDES</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn1 btn-primary" data-toggle="modal" data-target="#exampleModal2">
+                    <strong>AGREGAR SEDES</strong>
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="filterSedes" placeholder="Buscar..."
+                >
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-responsive">
+            <thead class="thead">
+                <tr>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">DIRECCION</th>
+                    <th scope="col">MODIFICAR</th>
+                    <th scope="col">ELIMINAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" >
+                    </td>
+                    <td>
+                        <input type="text" class="form-control">
+                    </td>
+                    <td>
+                        <button class="btn btn-success">MODIFICAR</button>
+                    </td>
+                    <td>
+                        <button  class="btn btn-danger">ELIMINAR</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--FIN ADMIN HEADQUARTERS !!!!-->
+    <!--PARKING LOT-->
+    <div class="adminParking">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">PARQUEOS</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">PARKING</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn1 btn-primary" data-toggle="modal" data-target="#exampleModal3">
+                    <strong> ADD PARKING</strong>
+                </button>
+            </div>
+        </div>
+        <br>
+        <table class="table table-hover table-responsive">
+            <thead class="thead">
+                <tr>
+                    <th scope="col">IDPARKING</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">PLACE</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">HEADQUARTERS</th>
+                    <th scope="col">SPACES</th>
+                    <th scope="col">MODIFY</th>
+                    <th scope="col">DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr >
+                    <td>
+                        <input type="text" class="form-control" disabled required>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"  required>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" disabled  required>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" disabled  pattern="[0-9]+"
+                            maxlength="4" required>
+                    </td>
+                    <td>
+                        <select name="sede" class="custom-select my-1 mr-sm-2" required>
+                            <option selected disabled>...</option>
+                            <option  requered>
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target=".bd-example-modal-xl" >
+                            SPACES
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-success">MODIFY</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger">DELETE</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--FIN PARKING LOT-->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">SPACES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table class="table table-borderless table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">IDSPACE</th>
+                                    <th scope="col">STATE</th>
+                                    <th scope="col">TYPE</th>
+                                    <th scope="col">USERS</th>
+                                    <th scope="col">PARKING</th>
+                                    <th scope="col">MODIFY</th>
+                                    <th scope="col">DELETE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let s of spaces">
+                                    <td>
+                                        <input type="text" class="form-control" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" disabled 
+                                            placeholder="Desocupado">
+                                        <input type="text" class="form-control" disabled 
+                                            placeholder="Ocupado">
+                                    </td>
+                                    <td>
+                                        <select name="users"
+                                            class="custom-select my-1 mr-sm-2">
+                                            <option selected disabled>...</option>
+                                            <option value="Standard" requered>
+                                                Standard
+                                            </option>
+                                            <option value="Preference" requered>
+                                                Preference
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="users" class="custom-select my-1 mr-sm-2">
+                                            <option selected disabled>...</option>
+                                            <option  requered>
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="sede"  class="custom-select my-1 mr-sm-2"
+                                            disabled>
+                                            <option >
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button  class="btn btn-success">MODIFICAR</button>
+                                    </td>
+                                    <td>
+                                        <button  class="btn btn-danger">ELIMINAR</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeModalRegisterP" type="button" class="btn btn-secondary"
+                            data-dismiss="modal">CERRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FIN MODAL SPACES-->
+</div>
+<br><br><br>

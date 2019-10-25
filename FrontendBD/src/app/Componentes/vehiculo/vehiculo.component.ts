@@ -43,7 +43,7 @@ export class VehiculoComponent implements OnInit {
   }
 
   
-  listar() {
+  /*listar() {
     this.vehiculo.listarVehiculo().subscribe(
       data => {
         this.vehiculo = data;
@@ -57,7 +57,7 @@ export class VehiculoComponent implements OnInit {
         });
       }
     );
-  }
+  }*/
   guardarVehiculo(){
     this.vehiculo.guardarVehiculo(this.form).subscribe(
       data=>{
@@ -78,11 +78,8 @@ export class VehiculoComponent implements OnInit {
         });
       }
     );
-  
-    
-  
   }
-  eliminarVehiculo(_formBehiculo){
+  /*eliminarVehiculo(_formBehiculo){
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         cancelButton: 'btn btn-secondary'
@@ -112,7 +109,7 @@ export class VehiculoComponent implements OnInit {
         )
       }
     })
-  }
+  }*/
   responseSuccess(data) {
     this.success = data.data;
     this.status = "success";

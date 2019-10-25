@@ -11,10 +11,10 @@ export class VehiculoService {
   constructor(private http: HttpClient) { }
 
   public listarVehiculo(){
-    this.http.get(`${this.baseUrl}`);
+    return this.http.get(`${this.baseUrl}`);
   }
   public guardarVehiculo(data){
-    this.http.post(`${this.baseUrl}/`, data);
+    return this.http.post(`${this.baseUrl}`,data)
   }
   public modificarVehiculo(data){
     return this.http.put(`${this.baseUrl}/${data.id}`,data)

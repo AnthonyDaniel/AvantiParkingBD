@@ -23,14 +23,15 @@ export class VehiculoComponent implements OnInit {
   public success: String;
   public status: String;
 
+  public vehiculos;
 
   ngOnInit() {
+    this.listar();
   }
   
   handleError(error) {
     this.error = error.error.errors;
   }
-
 
   data(data) {
     this.form.usuario = data.email;
@@ -39,26 +40,6 @@ export class VehiculoComponent implements OnInit {
   }
 
   onSubmit() {
-  
-  }
-
-  
-  /*listar() {
-    this.vehiculo.listarVehiculo().subscribe(
-      data => {
-        this.vehiculo = data;
-      },
-      error => {
-        Swal.fire({
-          type: 'error',
-          title: 'Error del sistema',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    );
-  }*/
-  guardarVehiculo(){
     this.vehiculo.guardarVehiculo(this.form).subscribe(
       data=>{
         Swal.fire({
@@ -79,7 +60,25 @@ export class VehiculoComponent implements OnInit {
       }
     );
   }
-  /*eliminarVehiculo(_formBehiculo){
+
+  
+  listar() {
+    this.vehiculo.listarVehiculo().subscribe(
+      data => {
+        this.vehiculos = data;
+      },
+      error => {
+        Swal.fire({
+          type: 'error',
+          title: 'Error del sistema',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    );
+  }
+  
+  eliminarVehiculo(_formVehiculo){
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         cancelButton: 'btn btn-secondary'
@@ -109,7 +108,7 @@ export class VehiculoComponent implements OnInit {
         )
       }
     })
-  }*/
+  }
   responseSuccess(data) {
     this.success = data.data;
     this.status = "success";

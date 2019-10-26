@@ -13,6 +13,7 @@ import { VehiculoComponent } from './Componentes/vehiculo/vehiculo.component';
 import { AdministradorComponent } from './Componentes/administrador/administrador.component';
 import { ReservaComponent } from './Componentes/reserva/reserva.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { VehiculoService } from 'src/app/Servicios/vehiculo.service';
+
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-reserva',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReservaComponent implements OnInit {
 
-  constructor() { }
+  timeStart = {hour: 13, minute: 0 };
+  timeEnd = {hour: 23, minute: 59 };
 
-  ngOnInit() {
+  public reserves = {
+    fechaReserva:null,
+    horaInicio:{hour: 13, minute: 0 },
+    horaFinal:{hour: 23, minute: 59 },
   }
+ngOnInit(){
 
+}
+ 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
 import Swal from 'sweetalert2';
+import { SedesService } from 'src/app/Servicios/sedes.service';
 @Component({
   selector: 'app-administrador',
   templateUrl: './administrador.component.html',
@@ -24,12 +25,11 @@ export class AdministradorComponent implements OnInit {
   public parqueos: any;
   public espacios: any;
 
-  constructor(public u: UsuarioService) { }
+  constructor(public u: UsuarioService, public s: SedesService) { }
 
   ngOnInit() {
-    this.u.obtenerUsuarios().subscribe(data => {
-      this.usuarios = data;
-    });
+    this.u.obtenerUsuarios().subscribe(data => {this.usuarios = data});
+    this.s.obtenerSedes().subscribe(data => {this.sedes = data});
   }
 
   onSubmit() {
@@ -92,7 +92,7 @@ export class AdministradorComponent implements OnInit {
       if (result.value) {
         usuario.tipo = "1";
         this.u.tipo(usuario).subscribe(
-          data=>{
+          data => {
             Swal.fire({
               type: 'success',
               title: 'El usuario ahora es un administrador',
@@ -101,7 +101,7 @@ export class AdministradorComponent implements OnInit {
             });
             this.ngOnInit();
           },
-          error=>{
+          error => {
             Swal.fire({
               type: 'error',
               title: 'No se conceder privilegios, revise su conexión a internet',
@@ -114,14 +114,14 @@ export class AdministradorComponent implements OnInit {
     })
   }
   regular(usuario) {
-    if(localStorage.getItem('usuario') == usuario.username){
+    if (localStorage.getItem('usuario') == usuario.username) {
       Swal.fire({
         type: 'error',
         title: 'No te puedes quitar tu mismo los privilegios de administrador, pidele a un colega que te los quite',
         showConfirmButton: false,
         timer: 1500
       });
-    }else{
+    } else {
       Swal.fire({
         title: '¿Estas seguro que deseas quitarle privilegio de administrador a este usuario?',
         text: "",
@@ -135,7 +135,7 @@ export class AdministradorComponent implements OnInit {
         if (result.value) {
           usuario.tipo = "0";
           this.u.tipo(usuario).subscribe(
-            data=>{
+            data => {
               Swal.fire({
                 type: 'success',
                 title: 'El usuario ya no es un administrador',
@@ -144,7 +144,7 @@ export class AdministradorComponent implements OnInit {
               });
               this.ngOnInit();
             },
-            error=>{
+            error => {
               Swal.fire({
                 type: 'error',
                 title: 'No se pudo quitar los privilegios',
@@ -157,15 +157,15 @@ export class AdministradorComponent implements OnInit {
       })
     }
   }
-  eliminarUsuario(usuario){
-    if(localStorage.getItem('usuario') == usuario.username){
+  eliminarUsuario(usuario) {
+    if (localStorage.getItem('usuario') == usuario.username) {
       Swal.fire({
         type: 'error',
         title: 'No te puedes eliminar tu mismo, esto para asegurar que el sistema simpre cuente con un administrador, pidele a un colega administrador, que te elimine',
         showConfirmButton: false,
         timer: 2500
       });
-    }else{
+    } else {
       Swal.fire({
         title: '¿Estas seguro que deseas eliminar este usuario?',
         text: "",
@@ -179,7 +179,7 @@ export class AdministradorComponent implements OnInit {
         if (result.value) {
           usuario.tipo = "0";
           this.u.eliminar(usuario).subscribe(
-            data=>{
+            data => {
               Swal.fire({
                 type: 'success',
                 title: 'Eliminado',
@@ -188,7 +188,7 @@ export class AdministradorComponent implements OnInit {
               });
               this.ngOnInit();
             },
-            error=>{
+            error => {
               Swal.fire({
                 type: 'error',
                 title: 'Es posible que este usuario tenga contenido valioso en su cuenta, por ende no puedes eliminarlo',
@@ -201,7 +201,98 @@ export class AdministradorComponent implements OnInit {
       })
     }
   }
-  onSubmitSede(){
-    alert('sedes');
+  onSubmitSede() {
+    if (this.form.nombre == null || this.form.nombre == '' || this.form.direccion == null || this.form.direccion == '') {
+      Swal.fire({
+        type: 'error',
+        title: 'Faltan datos',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } else {
+      this.s.guardar(this.form).subscribe(
+        data => {
+          Swal.fire({
+            type: 'success',
+            title: 'Sede creada correctamente',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.ngOnInit();
+        },
+        error => {
+          Swal.fire({
+            type: 'error',
+            title: 'La sede no pudo ser creada, revisa tu conexión a internet',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      );
+    }
+  }
+  modificarSede(sede){
+    if(sede.nombre != null || sede.nombre != '' || sede.direccion != null || sede.direccion != ''){
+      this.s.modificar(sede).subscribe(
+        data => {
+          Swal.fire({
+            type: 'success',
+            title: 'Sede modificada correctamente',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.ngOnInit();
+        },
+        error => {
+          Swal.fire({
+            type: 'error',
+            title: 'La sede no pudo modificar, faltan datos o tu conexion a internet fallo',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      );
+    }else{
+      Swal.fire({
+        type: 'error',
+        title: 'No puedes mandar espacios en blanco',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  }
+  eliminarSede(sede){
+      Swal.fire({
+        title: '¿Estas seguro que deseas eliminar esta sede?',
+        text: "",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4023',
+        cancelButtonColor: '#EF4023',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Eliminar ahora!'
+      }).then((result) => {
+        if (result.value) {
+          this.s.eliminar(sede).subscribe(
+            data => {
+              Swal.fire({
+                type: 'success',
+                title: 'Eliminada',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              this.ngOnInit();
+            },
+            error => {
+              Swal.fire({
+                type: 'error',
+                title: 'Es posible que no se pueda eliminar, porque esta sede esta asociada a otros componentes, como parqueos o espacios,..',
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+          );
+        }
+      })
   }
 }

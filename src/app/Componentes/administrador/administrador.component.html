@@ -68,37 +68,41 @@
                 </div>
             </div>
         </div>
-        <table class="table table-hover table-responsive">
-            <thead class="thead">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">USERNAME</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">ADMIN</th>
-                    <th scope="col">DELETE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let usuario of usuarios">
-                    <td>
-                        <input type="text" class="form-control" disabled [(ngModel)]="usuario.id">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" disabled [(ngModel)]="usuario.username">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" disabled [(ngModel)]="usuario.nombre">
-                    </td>
-                    <td>
-                        <button type="button" (click)="admin(usuario)" class="btn btn-success" *ngIf="usuario.tipo != 1">ADMIN</button>
-                        <button type="button" (click)="regular(usuario)" class="btn btn-danger" *ngIf="usuario.tipo == 1">REGULAR</button>
-                    </td>
-                    <td>
-                        <button (click)="eliminarUsuario(usuario)" class="btn btn-danger">ELIMINAR</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">ID_USUARIO</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">ADMIN</th>
+                        <th scope="col">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarios">
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.id">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.username">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.nombre">
+                        </td>
+                        <td>
+                            <button type="button" (click)="admin(usuario)" class="btn btn-success"
+                                *ngIf="usuario.tipo != 1">ADMIN</button>
+                            <button type="button" (click)="regular(usuario)" class="btn btn-danger"
+                                *ngIf="usuario.tipo == 1">REGULAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarUsuario(usuario)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--FIN ADMIN USERES !!!!-->
     <hr>
@@ -115,36 +119,37 @@
                 <h3 class="">SEDES</h3>
             </div>
             <div class="col-md-2 text-right">
-                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse" data-target="#agregar_sedes"
-                aria-expanded="false" aria-controls="agregar_sedes">
+                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse"
+                    data-target="#agregar_sedes" aria-expanded="false" aria-controls="agregar_sedes">
                     <strong>AGREGAR SEDES</strong>
                 </button>
             </div>
         </div>
         <div class="collapse" id="agregar_sedes">
-                <div class="card card-body">
-                    <form #sedeForm=ngForm (ngSubmit)="onSubmitSede()">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="text"><strong>NOMBRE</strong></label>
-                                    <input type="text" class="form-control" name="nombre" [(ngModel)]="form.username"
-                                        required placeholder="AvantiThony">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="text"><strong>DIRECCION</strong></label>
-                                    <input type="text" class="form-control" name="direccion" [(ngModel)]="form.id" required>
-                                </div>
+            <div class="card card-body">
+                <form #sedeForm=ngForm (ngSubmit)="onSubmitSede()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>NOMBRE</strong></label>
+                                <input type="text" class="form-control" name="nombre" [(ngModel)]="form.nombre" required
+                                    placeholder="AvantiThony">
                             </div>
                         </div>
-                        <br>
-                        <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
-                            title=""><strong>AGREGAR</strong></button>
-                    </form>
-                </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>DIRECCION</strong></label>
+                                <input type="text" class="form-control" name="direccion" [(ngModel)]="form.direccion"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                        title=""><strong>AGREGAR</strong></button>
+                </form>
             </div>
+        </div>
         <br>
         <div class="row">
             <div class="col">
@@ -153,24 +158,34 @@
                 </div>
             </div>
         </div>
-        <table class="table table-hover table-responsive">
-            <thead class="thead">
-                <tr>
-                    <th scope="col">IDSEDE</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">PROVINCE</th>
-                    <th scope="col">CITY</th>
-                    <th scope="col">ADDRESS</th>
-                    <th scope="col">MODIFY</th>
-                    <th scope="col">DELETE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">DIRECCION</th>
+                        <th scope="col">MODIFICAR</th>
+                        <th scope="col">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sede of sedes">
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="sede.nombre">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="sede.direccion">
+                        </td>
+                        <td>
+                            <button (click)="modificarSede(sede)" class="btn btn-success">MODIFIAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarSede(sede)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--FIN ADMIN HEADQUARTERS !!!!-->
     <!--PARKING LOT-->
@@ -192,24 +207,26 @@
             </div>
         </div>
         <br>
-        <table class="table table-hover table-responsive">
-            <thead class="thead">
-                <tr>
-                    <th scope="col">IDPARKING</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">PLACE</th>
-                    <th scope="col">QUANTITY</th>
-                    <th scope="col">HEADQUARTERS</th>
-                    <th scope="col">SPACES</th>
-                    <th scope="col">MODIFY</th>
-                    <th scope="col">DELETE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">IDPARKING</th>
+                        <th scope="col">NAME</th>
+                        <th scope="col">PLACE</th>
+                        <th scope="col">QUANTITY</th>
+                        <th scope="col">HEADQUARTERS</th>
+                        <th scope="col">SPACES</th>
+                        <th scope="col">MODIFY</th>
+                        <th scope="col">DELETE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <br><br><br>

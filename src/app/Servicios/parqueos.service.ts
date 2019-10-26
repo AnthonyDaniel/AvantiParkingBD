@@ -5,24 +5,21 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
-  private baseUrl = 'https://avantiparking.azurewebsites.net/api/usuario';
+export class ParqueosService {
+  private baseUrl = 'https://avantiparking.azurewebsites.net/api/parqueo';
 
   constructor(private http: HttpClient) { }
 
-  public obtenerUsuarios() {
+  public obtenerParqueo() {
     return this.http.get(`${this.baseUrl}`)
   }
-  public modificarUsuario(data){
-    return this.http.put(`${this.baseUrl}/${data.id}`,data)
+  public modificar(data){
+    return this.http.put(`${this.baseUrl}/${data.id_parqueo}`,data)
   }
   public eliminar(data){
-    return this.http.delete(`${this.baseUrl}/${data.id}`)
+    return this.http.delete(`${this.baseUrl}/${data.id_parqueo}`)
   }
   public guardar(data){
     return this.http.post(`${this.baseUrl}`,data)
-  }
-  public tipo(data){
-    return this.http.put(`${this.baseUrl}tipo/${data.id}`,data)
   }
 }

@@ -1,132 +1,302 @@
 <div class="container">
     <!--ADMIN USERES !!!!-->
     <div class="adminUser">
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="text-center">USER ADMINISTRATION</h1>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">USER ADMINISTRATION</h1>
+            </div>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-md-10">
-          <h3 class="">USUARIOS</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">USUARIOS</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button class="btn1 btn-primary" type="button" data-toggle="collapse" data-target="#agregar_usuario"
+                    aria-expanded="false" aria-controls="agregar_usuario">
+                    <strong>AGREGAR USUARIOS</strong>
+                </button>
+            </div>
         </div>
-        <div class="col-md-2 text-right">
-          <button type="button" class="btn1 btn-primary">
-            <strong>AGREGAR USUARIOS</strong>
-          </button>
+        <div class="collapse" id="agregar_usuario">
+            <div class="card card-body">
+                <form #userForm=ngForm (ngSubmit)="onSubmit()">
+                    <div class=" mb-3">
+                        <label class="text"><strong>NOMBRE</strong></label>
+                        <input type="text" class="form-control" name="nombre" [(ngModel)]="form.nombre" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>USERNAME</strong></label>
+                                <input type="text" class="form-control" name="username" [(ngModel)]="form.username"
+                                    required placeholder="thony2.0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>ID</strong></label>
+                                <input type="number" class="form-control" name="id" [(ngModel)]="form.id" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>DIRECCION</strong></label>
+                            <input type="text" class="form-control" name="direccion" [(ngModel)]="form.direccion">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>TELEFONO</strong></label>
+                            <input type="number" class="form-control" name="telefono" [(ngModel)]="form.telefono"
+                                pattern="[0-9]+">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="text" for="Password"><strong>CONTRASEÑA</strong></label>
+                            <input type="password" class="form-control" name="contrasena" [(ngModel)]="form.contrasena"
+                                required>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                        title="Registrate y disfruta de AvantiParking"><strong>AGREGAR</strong></button>
+                </form>
+            </div>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <input type="text" class="form-control" name="filterUsers" placeholder="Search..." >
-          </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="filterUsers" placeholder="Search...">
+                </div>
+            </div>
         </div>
-      </div>
-      <table class="table table-hover table-responsive">
-        <thead class="thead">
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">EMAIL</th>
-            <th scope="col">NAME</th>
-            <th scope="col">ADMIN</th>
-            <th scope="col">DELETE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr >
-            
-          </tr>
-        </tbody>
-      </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">ID_USUARIO</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">ADMIN</th>
+                        <th scope="col">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarios">
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.id">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.username">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" disabled [(ngModel)]="usuario.nombre">
+                        </td>
+                        <td>
+                            <button type="button" (click)="admin(usuario)" class="btn btn-success"
+                                *ngIf="usuario.tipo != 1">ADMIN</button>
+                            <button type="button" (click)="regular(usuario)" class="btn btn-danger"
+                                *ngIf="usuario.tipo == 1">REGULAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarUsuario(usuario)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--FIN ADMIN USERES !!!!-->
     <hr>
     <!--ADMIN HEADQUARTERS !!!!-->
     <div class="adminHeadquarters">
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="text-center">SEDES</h1>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">SEDES</h1>
+            </div>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-md-10">
-          <h3 class="">SEDES</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">SEDES</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse"
+                    data-target="#agregar_sedes" aria-expanded="false" aria-controls="agregar_sedes">
+                    <strong>AGREGAR SEDES</strong>
+                </button>
+            </div>
         </div>
-        <div class="col-md-2 text-right">
-          <button type="button" class="btn1 btn-primary">
-            <strong>AGREGAR SEDES</strong>
-          </button>
+        <div class="collapse" id="agregar_sedes">
+            <div class="card card-body">
+                <form #sedeForm=ngForm (ngSubmit)="onSubmitSede()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>NOMBRE</strong></label>
+                                <input type="text" class="form-control" name="nombre" [(ngModel)]="form.nombre" required
+                                    placeholder="AvantiThony">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>DIRECCION</strong></label>
+                                <input type="text" class="form-control" name="direccion" [(ngModel)]="form.direccion"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                        title=""><strong>AGREGAR</strong></button>
+                </form>
+            </div>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <input type="text" class="form-control" name="filterSedes" placeholder="Search..." >
-          </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="filterSedes" placeholder="Search...">
+                </div>
+            </div>
         </div>
-      </div>
-      <table class="table table-hover table-responsive">
-        <thead  class="thead">
-          <tr>
-            <th scope="col">IDSEDE</th>
-            <th scope="col">NAME</th>
-            <th scope="col">PROVINCE</th>
-            <th scope="col">CITY</th>
-            <th scope="col">ADDRESS</th>
-            <th scope="col">MODIFY</th>
-            <th scope="col">DELETE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr >
-            
-          </tr>
-        </tbody>
-      </table>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">DIRECCION</th>
+                        <th scope="col">MODIFICAR</th>
+                        <th scope="col">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sede of sedes">
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="sede.nombre">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="sede.direccion">
+                        </td>
+                        <td>
+                            <button (click)="modificarSede(sede)" class="btn btn-success">MODIFIAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarSede(sede)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--FIN ADMIN HEADQUARTERS !!!!-->
     <!--PARKING LOT-->
     <div class="adminParking">
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="text-center">PARQUEOS</h1>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="text-center">PARQUEOS</h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="">PARQUEOS</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse"
+                    data-target="#agregar_parqueo" aria-expanded="false" aria-controls="agregar_parqueo">
+                    <strong>AGREGAR PARQUEOS</strong>
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="agregar_parqueo">
+            <div class="card card-body">
+                <form #parqueoForm=ngForm (ngSubmit)="onSubmitParqueo()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>NOMBRE</strong></label>
+                                <input type="text" class="form-control" name="nombre" [(ngModel)]="form.nombre" required
+                                    placeholder="thony2.0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>ZONA</strong></label>
+                                <input type="text" class="form-control" name="zona" [(ngModel)]="form.zona" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>CANTIDAD</strong></label>
+                            <input type="number" class="form-control" name="cantidad" [(ngModel)]="form.cantidad">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>COMIENZO</strong></label>
+                            <input type="number" class="form-control" name="comienzo" [(ngModel)]="form.comienzo"
+                                pattern="[0-9]+">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="text" for="e"><strong>SEDE</strong></label>
+                            <select name="sede" [(ngModel)]="form.sede" class="custom-select my-1 mr-sm-2">
+                                <option selected disabled>...</option>
+                                <option value="{{sede.id_sede}}" *ngFor="let sede of sedes" requered>
+                                    {{sede.id_sede}} {{sede.nombre}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                        title="Registrate y disfruta de AvantiParking"><strong>AGREGAR</strong></button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">ZONA</th>
+                        <th scope="col">NOMBRE_SEDE</th>
+                        <th scope="col">ESPACIOS</th>
+                        <th scope="col">MODIFICAR</th>
+                        <th scope="col">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let parqueo of parqueos">
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="parqueo.nombre">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="parqueo.zona">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" disabled [(ngModel)]="parqueo.sede">
+                        </td>
+                        <td valign="middle" style="vertical-align:middle;" class="m-auto p-auto justify-content-center">
+                            <button class="m-auto p-auto btn btn-block text-primary" data-toggle="modal" data-target=".bd-example-modal-xl" (click)="verEspacios(parqueo)">
+                                <i class="fas fa-eye fa-lg" style="width:12; height:12;"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button (click)="modificarParqueo(parqueo)" class="btn btn-success">MODIFIAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarParqueo(parqueo)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-      <br>
-      <div class="row">
-        <div class="col-md-10">
-          <h3 class="">PARQUEOS</h3>
-        </div>
-        <div class="col-md-2 text-right">
-          <button type="button" class="btn1 btn-primary">
-            <strong>AGREGAR PARQUEOS</strong>
-          </button>
-        </div>
-      </div>
-      <br>
-      <table class="table table-hover table-responsive">
-        <thead  class="thead">
-          <tr>
-            <th scope="col">IDPARKING</th>
-            <th scope="col">NAME</th>
-            <th scope="col">PLACE</th>
-            <th scope="col">QUANTITY</th>
-            <th scope="col">HEADQUARTERS</th>
-            <th scope="col">SPACES</th>
-            <th scope="col">MODIFY</th>
-            <th scope="col">DELETE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr >
-          </tr>
-        </tbody>
-      </table>
+</div>
+<br><br><br>
+<!-- MODAL ESPACIOS -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      ...
     </div>
   </div>
-  <br><br><br>
+</div>
+<!-- FINAL MODAL ESPACIOS -->

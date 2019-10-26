@@ -28,6 +28,8 @@ export class AdministradorComponent implements OnInit {
     parqueo: null
   };
 
+  public filtroUsuarios = "";
+
   public usuarios: any;
   public sedes: any;
   public parqueos: any;

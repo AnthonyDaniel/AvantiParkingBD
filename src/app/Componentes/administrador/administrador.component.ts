@@ -201,4 +201,7 @@ export class AdministradorComponent implements OnInit {
       })
     }
   }
+  onSubmitSede(){
+    alert('sedes');
+  }
 }

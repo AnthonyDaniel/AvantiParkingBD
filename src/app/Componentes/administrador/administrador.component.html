@@ -115,11 +115,36 @@
                 <h3 class="">SEDES</h3>
             </div>
             <div class="col-md-2 text-right">
-                <button type="button" class="btn1 btn-primary">
+                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse" data-target="#agregar_sedes"
+                aria-expanded="false" aria-controls="agregar_sedes">
                     <strong>AGREGAR SEDES</strong>
                 </button>
             </div>
         </div>
+        <div class="collapse" id="agregar_sedes">
+                <div class="card card-body">
+                    <form #sedeForm=ngForm (ngSubmit)="onSubmitSede()">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="text"><strong>NOMBRE</strong></label>
+                                    <input type="text" class="form-control" name="nombre" [(ngModel)]="form.username"
+                                        required placeholder="AvantiThony">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="text"><strong>DIRECCION</strong></label>
+                                    <input type="text" class="form-control" name="direccion" [(ngModel)]="form.id" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                            title=""><strong>AGREGAR</strong></button>
+                    </form>
+                </div>
+            </div>
         <br>
         <div class="row">
             <div class="col">

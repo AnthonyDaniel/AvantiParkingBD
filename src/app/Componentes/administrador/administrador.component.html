@@ -201,9 +201,52 @@
                 <h3 class="">PARQUEOS</h3>
             </div>
             <div class="col-md-2 text-right">
-                <button type="button" class="btn1 btn-primary">
+                <button type="button" class="btn1 btn-primary" type="button" data-toggle="collapse"
+                    data-target="#agregar_parqueo" aria-expanded="false" aria-controls="agregar_parqueo">
                     <strong>AGREGAR PARQUEOS</strong>
                 </button>
+            </div>
+        </div>
+        <div class="collapse" id="agregar_parqueo">
+            <div class="card card-body">
+                <form #parqueoForm=ngForm (ngSubmit)="onSubmitParqueo()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>NOMBRE</strong></label>
+                                <input type="text" class="form-control" name="nombre" [(ngModel)]="form.nombre" required
+                                    placeholder="thony2.0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="text"><strong>ZONA</strong></label>
+                                <input type="text" class="form-control" name="zona" [(ngModel)]="form.zona" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>CANTIDAD</strong></label>
+                            <input type="number" class="form-control" name="cantidad" [(ngModel)]="form.cantidad">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text" for="Phone"><strong>COMIENZO</strong></label>
+                            <input type="number" class="form-control" name="comienzo" [(ngModel)]="form.comienzo"
+                                pattern="[0-9]+">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="text" for="e"><strong>SEDE</strong></label>
+                            <select name="sede" [(ngModel)]="form.sede" class="custom-select my-1 mr-sm-2">
+                                <option selected disabled>...</option>
+                                <option value="{{sede.id_sede}}" *ngFor="let sede of sedes" requered>
+                                    {{sede.id_sede}} {{sede.nombre}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="_btn btn-outline-primary btn-block rounded border border-secondary"
+                        title="Registrate y disfruta de AvantiParking"><strong>AGREGAR</strong></button>
+                </form>
             </div>
         </div>
         <br>
@@ -211,18 +254,36 @@
             <table class="table table-hover">
                 <thead class="thead">
                     <tr>
-                        <th scope="col">IDPARKING</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">PLACE</th>
-                        <th scope="col">QUANTITY</th>
-                        <th scope="col">HEADQUARTERS</th>
-                        <th scope="col">SPACES</th>
-                        <th scope="col">MODIFY</th>
-                        <th scope="col">DELETE</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">ZONA</th>
+                        <th scope="col">NOMBRE_SEDE</th>
+                        <th scope="col">ESPACIOS</th>
+                        <th scope="col">MODIFICAR</th>
+                        <th scope="col">ELIMINAR</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let parqueo of parqueos">
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="parqueo.nombre">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" [(ngModel)]="parqueo.zona">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="nombre" disabled [(ngModel)]="parqueo.sede">
+                        </td>
+                        <td valign="middle" style="vertical-align:middle;" class="m-auto p-auto justify-content-center">
+                            <button class="m-auto p-auto btn btn-block text-primary" data-toggle="modal" data-target=".bd-example-modal-xl" (click)="verEspacios(parqueo)">
+                                <i class="fas fa-eye fa-lg" style="width:12; height:12;"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button (click)="modificarParqueo(parqueo)" class="btn btn-success">MODIFIAR</button>
+                        </td>
+                        <td>
+                            <button (click)="eliminarParqueo(parqueo)" class="btn btn-danger">ELIMINAR</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -230,3 +291,12 @@
     </div>
 </div>
 <br><br><br>
+<!-- MODAL ESPACIOS -->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+<!-- FINAL MODAL ESPACIOS -->

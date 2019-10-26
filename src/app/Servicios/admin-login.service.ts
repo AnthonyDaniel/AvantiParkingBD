@@ -11,7 +11,6 @@ export class AdminLoginService implements CanActivate {
     return this.Token.admin();
   }
   constructor(private Token: TokenService) {
-    console.log(this.Token.admin());
-   }
+  }
 
 }

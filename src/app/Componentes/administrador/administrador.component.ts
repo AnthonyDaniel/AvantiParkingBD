@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
 import Swal from 'sweetalert2';
 import { SedesService } from 'src/app/Servicios/sedes.service';
+import { ParqueosService } from 'src/app/Servicios/parqueos.service';
 @Component({
   selector: 'app-administrador',
   templateUrl: './administrador.component.html',
@@ -16,7 +17,11 @@ export class AdministradorComponent implements OnInit {
     id: null,
     direccion: null,
     telefono: null,
-    contrasena: null
+    contrasena: null,
+    zona:null,
+    comienzo:null,
+    sede:null,
+    cantidad:null
   };
 
 
@@ -25,11 +30,17 @@ export class AdministradorComponent implements OnInit {
   public parqueos: any;
   public espacios: any;
 
-  constructor(public u: UsuarioService, public s: SedesService) { }
+  constructor(public u: UsuarioService, public s: SedesService, public p: ParqueosService) { }
 
   ngOnInit() {
     this.u.obtenerUsuarios().subscribe(data => {this.usuarios = data});
     this.s.obtenerSedes().subscribe(data => {this.sedes = data});
+    this.p.obtenerParqueo().subscribe(
+      data => {this.parqueos = data},
+      error=>{this.p.obtenerParqueo().subscribe(data => {this.parqueos = data})}
+      );
+    
+    this.clean();
   }
 
   onSubmit() {
@@ -76,6 +87,10 @@ export class AdministradorComponent implements OnInit {
     this.form.direccion = null;
     this.form.telefono = null;
     this.form.contrasena = null;
+    this.form.zona = null;
+    this.form.comienzo = null;
+    this.form.sede = null;
+    this.form.cantidad = null;
   }
 
   admin(usuario) {
@@ -295,4 +310,84 @@ export class AdministradorComponent implements OnInit {
         }
       })
   }
+  onSubmitParqueo(){
+      this.p.guardar(this.form).subscribe(
+        data => {
+          Swal.fire({
+            type: 'success',
+            title: 'Parqueo creado correctamente',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.ngOnInit();
+        },
+        error => {
+          Swal.fire({
+            type: 'error',
+            title: 'La sede no pudo ser creada, faltatan datos, o tienes problemas en tu conexión de internet',
+            showConfirmButton: false,
+            timer: 2500
+          });
+        }
+      );
+    }
+    modificarParqueo(parqueo){
+        parqueo.sede = parqueo.id_sede;
+        this.p.modificar(parqueo).subscribe(
+          data => {
+            Swal.fire({
+              type: 'success',
+              title: 'Parqueo modificado correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.ngOnInit();
+          },
+          error => {
+            Swal.fire({
+              type: 'error',
+              title: 'El parqueo no se pudo modificar, faltan datos o tu conexion a internet fallo',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        );
+    }
+    eliminarParqueo(parqueo){
+      Swal.fire({
+        title: '¿Estas seguro que deseas eliminar este parqueo?',
+        text: "",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4023',
+        cancelButtonColor: '#EF4023',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Eliminar ahora!'
+      }).then((result) => {
+        if (result.value) {
+          this.s.eliminar(parqueo).subscribe(
+            data => {
+              Swal.fire({
+                type: 'success',
+                title: 'Eliminado',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              this.ngOnInit();
+            },
+            error => {
+              Swal.fire({
+                type: 'error',
+                title: 'Es posible que no se pueda eliminar, porque esta sede esta asociada a otros componentes, como espacios,..',
+                showConfirmButton: false,
+                timer: 2500
+              });
+            }
+          );
+        }
+      })
+    }
+    verEspacios(parqueo){
+      console.log(parqueo);
+    }
 }

@@ -274,7 +274,8 @@
                             <input type="text" class="form-control" name="nombre" disabled [(ngModel)]="parqueo.sede">
                         </td>
                         <td valign="middle" style="vertical-align:middle;" class="m-auto p-auto justify-content-center">
-                            <button class="m-auto p-auto btn btn-block text-primary" data-toggle="modal" data-target=".bd-example-modal-xl" (click)="verEspacios(parqueo)">
+                            <button class="m-auto p-auto btn btn-block text-primary" data-toggle="modal"
+                                data-target=".bd-example-modal-xl" (click)="verEspacios(parqueo)">
                                 <i class="fas fa-eye fa-lg" style="width:12; height:12;"></i>
                             </button>
                         </td>
@@ -292,11 +293,100 @@
 </div>
 <br><br><br>
 <!-- MODAL ESPACIOS -->
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      ...
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div clas="modal-title">
+                    <h4 class="text-center text-black-50">ESPACIOS</h4>
+                </div>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card card-body">
+                <h1 class="text-center text-black-50">AGREGAR ESPACIOS</h1>
+                <div class="row">
+                    <div class="col-md-6 m-auto">
+                        <input type="number" class="form-control" name="espacio" [(ngModel)]="form.nombre"
+                            placeholder="NUMERO DEL ESPACIO">
+                    </div>
+                    <div class="col-md-6 m-auto">
+                        <button (click)="agregarEspacio()" class="btn btn-success btn-block">AGREGAR</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="card card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="text" for="e"><strong>TIPO</strong></label>
+                        <select name="sede" [(ngModel)]="form.tipo_espacio" class="custom-select my-1 mr-sm-2">
+                            <option selected disabled>...</option>
+                            <option value="regular" requered>Regular</option>
+                            <option value="especial" requered>Especial</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text" for="e"><strong>DISPONIBILIDAD</strong></label>
+                        <select name="sede" [(ngModel)]="form.estado" class="custom-select my-1 mr-sm-2">
+                            <option selected disabled>...</option>
+                            <option value="1" requered>Ocupados</option>
+                            <option value="0" requered>Desocupados</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <button (click)="filtro()" class="btn btn-block btn-success"><strong>APLICAR
+                                FILTRO O RECARGAR</strong></button>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead">
+                            <tr>
+                                <th scope="col">NOMBRE</th>
+                                <th scope="col">ESTADO</th>
+                                <th scope="col">TIPO</th>
+                                <th scope="col">MODIFICAR</th>
+                                <th scope="col">ELIMINAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let espacio of espacios">
+                                <td>
+                                    <input type="text" class="form-control" name="nombre" [(ngModel)]="espacio.nombre"
+                                        disabled>
+                                </td>
+                                <td>
+                                    <select name="sede" [(ngModel)]="espacio.tipo_espacio"
+                                        class="custom-select my-1 mr-sm-2">
+                                        <option selected disabled>...</option>
+                                        <option value="regular" requered>Regular</option>
+                                        <option value="especial" requered>Especial</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="sede" [(ngModel)]="espacio.estado" class="custom-select my-1 mr-sm-2">
+                                        <option selected disabled>...</option>
+                                        <option value="1" requered>Ocupados</option>
+                                        <option value="0" requered>Desocupados</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button (click)="modificarEspacio(espacio)"
+                                        class="btn btn-success">MODIFIAR</button>
+                                </td>
+                                <td>
+                                    <button (click)="eliminarEspacio(espacio)" class="btn btn-danger">ELIMINAR</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- FINAL MODAL ESPACIOS -->

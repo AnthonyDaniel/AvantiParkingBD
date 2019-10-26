@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/Servicios/auth.service';
   styleUrls: ['./vehiculo.component.css']
 })
 export class VehiculoComponent implements OnInit {
-  public form = {
+  public formVehiculo = {
     placa: null,
     modelo: null,
     marca: null,
@@ -28,30 +28,25 @@ export class VehiculoComponent implements OnInit {
   public vehiculos;
 
   ngOnInit() {
-    this.listar();
+    this.vehiculo.listarVehiculo().subscribe(data=>{
+      this.data(data);
+    });
+    this.listar()
   }
   
   handleError(error) {
     this.error = error.error.errors;
   }
 
-  
   data(data) {
-    var form = this.form;
+    var form = this.formVehiculo;
     var usuario = localStorage.getItem("usuario");
-    
-      data.forEach(function (value) {
-        if(value.username == usuario){
-          form.usuario = value.username;
-        console.log(form.usuario)
-        }
-    });
-  
-    this.form = form;
-  
+    console.log(usuario)
+    this.formVehiculo.usuario = usuario;
   }
+
   onSubmit() {
-    this.vehiculo.guardarVehiculo(this.form).subscribe(
+    this.vehiculo.guardarVehiculo(this.formVehiculo).subscribe(
       data=>{
         Swal.fire({
           type: 'success',
@@ -59,7 +54,7 @@ export class VehiculoComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500
         });
-        
+        this.ngOnInit()
       },
       error=>{
         Swal.fire({
@@ -71,8 +66,7 @@ export class VehiculoComponent implements OnInit {
       }
     );
   }
-
-  
+   
   listar() {
     this.vehiculo.listarVehiculo().subscribe(
       data => {
@@ -90,6 +84,8 @@ export class VehiculoComponent implements OnInit {
   }
   
   eliminarVehiculo(_formVehiculo){
+    _formVehiculo.usuario=this.formVehiculo.usuario
+    console.log(_formVehiculo.usuario)
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         cancelButton: 'btn btn-secondary'
@@ -98,7 +94,7 @@ export class VehiculoComponent implements OnInit {
     })
 
     Swal.fire({
-      title: 'Esta segur de eliminar?',
+      title: 'Esta seguro de eliminar?',
       text: "No volveras a la  recuperar esta informacion ni relacionada con ella!!",
       type: 'warning',
       showCancelButton: true,
@@ -120,6 +116,29 @@ export class VehiculoComponent implements OnInit {
       }
     })
   }
+  modificarVehiculo(_formVehiculo) {
+    _formVehiculo.usuario = this.formVehiculo.usuario;
+    this.vehiculo.modificarVehiculo(_formVehiculo).subscribe(
+      data => {
+        Swal.fire({
+          type: 'success',
+          title: 'Vehiculo modificado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.ngOnInit();
+      },
+      error => {
+        Swal.fire({
+          type: 'error',
+          title: 'El vehiculo no se pudo modificar, faltan datos o tu conexion a internet fallo',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    );
+  }
+ 
   responseSuccess(data) {
     this.success = data.data;
     this.status = "success";

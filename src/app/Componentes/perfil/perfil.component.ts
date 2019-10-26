@@ -53,6 +53,7 @@ export class PerfilComponent implements OnInit {
           form.direccion = value.direccion;
           form.id = value.id;
           form.contrasena = value.contrasena;
+          console.log(form.username)
         }
     });
     if(form.username == '' || form.username == null){

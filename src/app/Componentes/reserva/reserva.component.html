@@ -1,37 +1,37 @@
 <br>
 <div class="container">
-  <h1 class="title text text-center"><strong>RESERVE</strong></h1>
-  <form #Confirm=ngForm >
+  <h1 class="title text text-center"><strong>RESERVA</strong></h1>
+  <form #Confirm=ngForm (ngSubmit)="reserve()">
     <div class="row">
       <div class="col-md-6">
-        <label class="text" for="e"><strong>PARKING</strong></label>
-        <select name="park" class="custom-select my-1 mr-sm-2" required>
+        <label class="text" for="e"><strong>PARQUEO</strong></label>
+        <select name="parqueo" [(ngModel)]="confirmar.parqueo" class="custom-select my-1 mr-sm-2" required>
           <option></option>
-          <option>
+          <option value="{{p.idParqueo}}" *ngFor="let p of parqueos">{{p.idParqueo}} {{p.nombre}}
           </option>
         </select>
       </div>
       <div class="col-md-6">
-        <label class="text" for="id"><strong>VEHICLE</strong></label>
-        <select name="vehicle" class="custom-select my-1 mr-sm-2" required>
+        <label class="text" for="id"><strong>VEHICULO</strong></label>
+        <select name="vehiculo" [(ngModel)]="confirmar.vehiculo" class="custom-select my-1 mr-sm-2" required>
           <option></option>
-          <option>N</option>
+          <option value="{{v.placa}}" *ngFor="let v of vehiculos">{{v.placa}} {{v.marca}}</option>
         </select>
       </div>
     </div>
   </form>
-  <div >
+  <div *ngIf="Confirm.valid">
     <br><br>
-    <form >
+    <form #FormReserva=ngForm (ngSubmit)="confirmarR()">
       <div class="row">
         <div class="col-6">
-          <label class="text" for="e"><strong>RESERVATION DAY</strong></label>
+          <label class="text" for="e"><strong>DIA DE RESERVA</strong></label>
           <div class="form-group">
             <div class="input-group my-xl-4 my-sm-1">
-              <input class="form-control" name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="reserves.fechaReserva"
+              <input class="form-control" name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="reservas.fechaReserva"
                 required>
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary"type="button">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                   <i class="material-icons">date_range</i></button>
               </div>
             </div>
@@ -41,31 +41,31 @@
           <div class="mr-auto">
             <div class=row>
               <div class="col-6 ml-auto">
-                <label class="text">STARTS AT</label>
-                <ngb-timepicker name="start" [(ngModel)]="reserves.horaInicio" required></ngb-timepicker>
+                <label class="text">Desde</label>
+                <ngb-timepicker name="start" [(ngModel)]="reservas.horaInicio" required></ngb-timepicker>
               </div>
               <div class="col-6 mr-auto">
-                <label class="text">ENDS AT</label>
-                <ngb-timepicker name="end" [(ngModel)]="reserves.horaFinal" required></ngb-timepicker>
+                <label class="text">Hasta</label>
+                <ngb-timepicker name="end" [(ngModel)]="reservas.horaFinal" required></ngb-timepicker>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" id="OpenModal"  class="btn btn-outline-primary"
-          data-toggle="modal" data-target=".bd-example-modal-xl2"><strong>SELECT SPACE</strong></button>
+        <button type="submit" id="OpenModal" *ngIf="reservas.fechaReserva!=null" class="btn btn-outline-primary"
+          data-toggle="modal" data-target=".bd-example-modal-xl2"><strong>SELECCIONAR ESPACIO</strong></button>
       </div>
     </form>
     <br><br>
-    <div >
+    <div *ngIf="statusSpace">
       <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">SPACES</h5>
+                <h5 class="modal-title" id="exampleModalLabel">ESPACES</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeM">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -75,21 +75,22 @@
                   <table class="table table-borderless table-sm">
                     <thead>
                       <tr>
-                        <th scope="col">IDSPACE</th>
-                        <th scope="col">TYPE</th>
-                        <th scope="col">SELECT</th>
+                        <th scope="col">IDESPACIO</th>
+                        <th scope="col">TIPO</th>
+                        <th scope="col">SELECCIONAR</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr >
+                      <tr *ngFor="let s of espacios">
                         <td>
-                          <input type="text" class="form-control" disabled >
+                          <input type="text" class="form-control" disabled [(ngModel)]="s.id_espacio">
                         </td>
                         <td>
-                          <input type="text" class="form-control" disabled >
+                          <input type="text" class="form-control" disabled [(ngModel)]="s.tipo_espacio">
                         </td>
                         <td>
-                          <button type="button" class="btn btn-outline-primary"><strong>SELECCIONAR</strong></button>
+                          <button type="button" class="btn btn-outline-primary"
+                            (click)="selectSpace(s)"><strong>SELECCIONAR</strong></button>
                         </td>
                       </tr>
                     </tbody>
@@ -100,52 +101,52 @@
           </div>
         </div>
       </div>
-      <label></label>
+      <label>Espacio: {{espacio.id_espacio}}</label>
     </div>
   </div>
   <br><br>
   <div class="text-center">
-    <button type="submit"  
-      class="btn btn-outline-primary btn-block"><strong>AGREGAR
-        RESERVA</strong></button>
+    <button type="submit" [disabled]="espacio.id_espacio==null" (click)="reservar()"
+      class="btn btn-outline-primary btn-block"><strong>AGREGAR RESERVA</strong></button>
   </div>
   <br><br>
-  <h3 class="text-center">RESERVATIONS</h3>
+  <h3 class="text-center">RESERVAS</h3>
   <div class="table-responsive">
     <table class="table table-borderless table-sm">
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">RESERVE DAY</th>
-          <th scope="col">TIME START</th>
-          <th scope="col">TIME END</th>
-          <th scope="col">SPACE</th>
-          <th scope="col">VEHICLE</th>
-          <th scope="col">DELETE</th>
+          <th scope="col">DIA RESERVA</th>
+          <th scope="col">HORA INICIAL</th>
+          <th scope="col">HORA FINAL</th>
+          <th scope="col">ESPACIO</th>
+          <th scope="col">VEHICULO</th>
+          <th scope="col">ELIMINAR</th>
         </tr>
       </thead>
       <tbody>
-        <tr >
+        <tr *ngFor="let s of res">
           <td>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" disabled [(ngModel)]="s.id_reserva">
           </td>
           <td>
-            <input type="text" class="form-control" disabled >
+            <input type="text" class="form-control" disabled [(ngModel)]="s.fecha_reserva">
           </td>
           <td>
-            <input type="text" class="form-control" disabled >
+            <input type="text" class="form-control" disabled [(ngModel)]="s.hora_inicio">
           </td>
           <td>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" disabled [(ngModel)]="s.hora_final">
           </td>
           <td>
-            <input type="text" class="form-control" disabled >
+            <input type="text" class="form-control" disabled [(ngModel)]="s.espacio">
           </td>
           <td>
-            <input type="text" class="form-control" disabled >
+            <input type="text" class="form-control" disabled [(ngModel)]="s.vehiculo">
           </td>
           <td>
-            <button type="button" class="btn btn-outline-primary"><strong>DELETE</strong></button>
+            <button type="button" class="btn btn-outline-primary"
+              (click)="deleteReserve(s)"><strong>ELIMINAR</strong></button>
             </td>
         </tr>
       </tbody>

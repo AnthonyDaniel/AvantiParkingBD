@@ -22,4 +22,7 @@ export class UsuarioService {
   public guardar(data){
     return this.http.post(`${this.baseUrl}`,data)
   }
+  public tipo(data){
+    return this.http.put(`${this.baseUrl}tipo/${data.id}`,data)
+  }
 }

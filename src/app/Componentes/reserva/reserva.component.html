@@ -1,0 +1,155 @@
+<br>
+<div class="container">
+  <h1 class="title text text-center"><strong>RESERVE</strong></h1>
+  <form #Confirm=ngForm >
+    <div class="row">
+      <div class="col-md-6">
+        <label class="text" for="e"><strong>PARKING</strong></label>
+        <select name="park" class="custom-select my-1 mr-sm-2" required>
+          <option></option>
+          <option>
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="text" for="id"><strong>VEHICLE</strong></label>
+        <select name="vehicle" class="custom-select my-1 mr-sm-2" required>
+          <option></option>
+          <option>N</option>
+        </select>
+      </div>
+    </div>
+  </form>
+  <div >
+    <br><br>
+    <form >
+      <div class="row">
+        <div class="col-6">
+          <label class="text" for="e"><strong>RESERVATION DAY</strong></label>
+          <div class="form-group">
+            <div class="input-group my-xl-4 my-sm-1">
+              <input class="form-control" name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="reserves.fechaReserva"
+                required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary"type="button">
+                  <i class="material-icons">date_range</i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="mr-auto">
+            <div class=row>
+              <div class="col-6 ml-auto">
+                <label class="text">STARTS AT</label>
+                <ngb-timepicker name="start" [(ngModel)]="reserves.horaInicio" required></ngb-timepicker>
+              </div>
+              <div class="col-6 mr-auto">
+                <label class="text">ENDS AT</label>
+                <ngb-timepicker name="end" [(ngModel)]="reserves.horaFinal" required></ngb-timepicker>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" id="OpenModal"  class="btn btn-outline-primary"
+          data-toggle="modal" data-target=".bd-example-modal-xl2"><strong>SELECT SPACE</strong></button>
+      </div>
+    </form>
+    <br><br>
+    <div >
+      <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SPACES</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeM">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body table-responsive">
+                <div class="table-responsive">
+                  <table class="table table-borderless table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">IDSPACE</th>
+                        <th scope="col">TYPE</th>
+                        <th scope="col">SELECT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr >
+                        <td>
+                          <input type="text" class="form-control" disabled >
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" disabled >
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-outline-primary"><strong>SELECCIONAR</strong></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <label></label>
+    </div>
+  </div>
+  <br><br>
+  <div class="text-center">
+    <button type="submit"  
+      class="btn btn-outline-primary btn-block"><strong>AGREGAR
+        RESERVA</strong></button>
+  </div>
+  <br><br>
+  <h3 class="text-center">RESERVATIONS</h3>
+  <div class="table-responsive">
+    <table class="table table-borderless table-sm">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">RESERVE DAY</th>
+          <th scope="col">TIME START</th>
+          <th scope="col">TIME END</th>
+          <th scope="col">SPACE</th>
+          <th scope="col">VEHICLE</th>
+          <th scope="col">DELETE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr >
+          <td>
+            <input type="text" class="form-control" disabled>
+          </td>
+          <td>
+            <input type="text" class="form-control" disabled >
+          </td>
+          <td>
+            <input type="text" class="form-control" disabled >
+          </td>
+          <td>
+            <input type="text" class="form-control" disabled>
+          </td>
+          <td>
+            <input type="text" class="form-control" disabled >
+          </td>
+          <td>
+            <input type="text" class="form-control" disabled >
+          </td>
+          <td>
+            <button type="button" class="btn btn-outline-primary"><strong>DELETE</strong></button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+</div>

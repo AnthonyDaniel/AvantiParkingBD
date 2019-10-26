@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VehiculoService } from 'src/app/Servicios/vehiculo.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/Servicios/auth.service';
 
 @Component({
   selector: 'app-vehiculo',
@@ -18,7 +20,7 @@ export class VehiculoComponent implements OnInit {
   public vehicles;
   public urlImg;
 
-  constructor(  private vehiculo: VehiculoService) { }
+  constructor(  private vehiculo: VehiculoService,public auth:AuthService, private router: Router) { }
   public error: String;
   public success: String;
   public status: String;
@@ -33,12 +35,21 @@ export class VehiculoComponent implements OnInit {
     this.error = error.error.errors;
   }
 
+  
   data(data) {
-    this.form.usuario = data.email;
-    console.log(this.form);
+    var form = this.form;
+    var usuario = localStorage.getItem("usuario");
     
+      data.forEach(function (value) {
+        if(value.username == usuario){
+          form.usuario = value.username;
+        console.log(form.usuario)
+        }
+    });
+  
+    this.form = form;
+  
   }
-
   onSubmit() {
     this.vehiculo.guardarVehiculo(this.form).subscribe(
       data=>{

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private baseUrl = 'http://localhost:8000/api/usuario';
+  private baseUrl = 'https://avantiparking.azurewebsites.net/api/usuario';
 
   constructor(private http: HttpClient) { }
 

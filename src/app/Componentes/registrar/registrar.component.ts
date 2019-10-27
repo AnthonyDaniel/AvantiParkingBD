@@ -33,26 +33,27 @@ export class RegistrarComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500
       });
+    }else{
+      this.u.guardar(this.form).subscribe(
+        data=>{
+          Swal.fire({
+            type: 'success',
+            title: 'Usuario creado correctamente, te enviaremos al login, para que te puedas loguear',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.router.navigateByUrl('/login');
+        },
+        error=>{
+          Swal.fire({
+            type: 'error',
+            title: 'El usuario no puede ser creado,.. Puede causarse al usar un username ya utilizado o un id ya utilizado',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      );
     }
-    this.u.guardar(this.form).subscribe(
-      data=>{
-        Swal.fire({
-          type: 'success',
-          title: 'Usuario creado correctamente, te enviaremos al login, para que te puedas loguear',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.router.navigateByUrl('/login');
-      },
-      error=>{
-        Swal.fire({
-          type: 'error',
-          title: 'El usuario no puede ser creado,.. Puede causarse al usar un username ya utilizado o un id ya utilizado',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    );
   }
 
 }

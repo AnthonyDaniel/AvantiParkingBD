@@ -1,45 +1,59 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark colornavbar">
-    <a class="navbar-brand" routerLink="/"><img
-        src="https://www.avantica.net/hubfs/Redesign-2018-assets/avantica-copy@3x.png" id="logo"></a>
-    <button class="navbar-toggler" id="togglee" type="button" (click) = "toggleNavbar()">
-      
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02" [ngClass] = "{'show': navbarOpen}">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/reserva" *ngIf="loggedIn" data-toggle="tooltip" data-placement="left" title="Crea reservas de parqueos" (click) = "toggleNavbar()">
-            Reserva
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/perfil" *ngIf="loggedIn" data-toggle="tooltip" data-placement="left" title="Mira tu perfil, cambia algunos datos."  (click) = "toggleNavbar()">
-            <i class="material-icons"> account_circle</i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/vehiculo"  *ngIf="loggedIn" data-toggle="tooltip" data-placement="left" title="Administra tus vehiculos"  (click) = "toggleNavbar()">
-           
-            <i class="material-icons">drive_eta</i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto mt-2 mt-lg-o">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/admin" *ngIf="admin" data-toggle="tooltip" data-placement="left" title="Administra el sistema" (click) = "toggleNavbar()" >
-            <p>Administration</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/registrar" data-toggle="tooltip" data-placement="left" title="Registrate y disfruta AvantiParking" *ngIf="!loggedIn" (click) = "toggleNavbar()">Registrarse</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " routerLink="/login"  data-toggle="tooltip" data-placement="left" title="Entra a AvantiParking y has tu reserva" routerLink="/login" *ngIf="!loggedIn" (click) = "toggleNavbar()">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"  data-toggle="tooltip" data-placement="left" title="Sign off" href="#" (click)="logout()" *ngIf="loggedIn">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <div class="margin"></div>
+  <a class="navbar-brand" routerLink="/"><img
+      src="https://www.avantica.net/hubfs/Redesign-2018-assets/avantica-copy@3x.png" id="logo"></a>
+  <button class="navbar-toggler" id="togglee" type="button" (click)="toggleNavbar()">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02" [ngClass]="{'show': navbarOpen}">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/reserva" *ngIf="loggedIn" data-toggle="tooltip" data-placement="left"
+          title="Crea reservas de parqueos" (click)="toggleNavbar()">
+          Reserva
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/perfil" *ngIf="loggedIn" data-toggle="tooltip" data-placement="left"
+          title="Mira tu perfil, cambia algunos datos." (click)="toggleNavbar()">
+          <i class="material-icons"> account_circle</i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/vehiculo" *ngIf="loggedIn" data-toggle="tooltip" data-placement="left"
+          title="Administra tus vehiculos" (click)="toggleNavbar()">
+
+          <i class="material-icons">drive_eta</i>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-o">
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:4200" *ngIf="admin" data-toggle="tooltip" data-placement="left"
+          title="Administra el sistema" (click)="toggleNavbar()">
+          <p>Crear un respaldo</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin" *ngIf="admin" data-toggle="tooltip" data-placement="left"
+          title="Administra el sistema" (click)="toggleNavbar()">
+          <p>Administration</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/registrar" data-toggle="tooltip" data-placement="left"
+          title="Registrate y disfruta AvantiParking" *ngIf="!loggedIn" (click)="toggleNavbar()">Registrarse</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " routerLink="/login" data-toggle="tooltip" data-placement="left"
+          title="Entra a AvantiParking y has tu reserva" routerLink="/login" *ngIf="!loggedIn"
+          (click)="toggleNavbar()">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tooltip" data-placement="left" title="Sign off" href="#" (click)="logout()"
+          *ngIf="loggedIn">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="margin"></div>

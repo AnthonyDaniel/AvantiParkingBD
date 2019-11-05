@@ -34,14 +34,9 @@ export class VehiculoComponent implements OnInit {
     this.listar()
   }
   
-  handleError(error) {
-    this.error = error.error.errors;
-  }
-
   data(data) {
     var form = this.formVehiculo;
     var usuario = localStorage.getItem("usuario");
-    console.log(usuario)
     this.formVehiculo.usuario = usuario;
   }
 
@@ -68,9 +63,15 @@ export class VehiculoComponent implements OnInit {
   }
    
   listar() {
+    var vehi;
     this.vehiculo.listarVehiculo().subscribe(
       data => {
-        this.vehiculos = data;
+       
+        this.vehiculos=data;
+        var words = this.vehiculos;
+        const result = words.filter(word => word.username==this.formVehiculo.usuario);
+        this.vehiculos=result;
+
       },
       error => {
         Swal.fire({
@@ -82,10 +83,10 @@ export class VehiculoComponent implements OnInit {
       }
     );
   }
+
   
   eliminarVehiculo(_formVehiculo){
     _formVehiculo.usuario=this.formVehiculo.usuario
-    console.log(_formVehiculo.usuario)
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         cancelButton: 'btn btn-secondary'
@@ -116,6 +117,7 @@ export class VehiculoComponent implements OnInit {
       }
     })
   }
+  
   modificarVehiculo(_formVehiculo) {
     _formVehiculo.usuario = this.formVehiculo.usuario;
     this.vehiculo.modificarVehiculo(_formVehiculo).subscribe(
@@ -147,4 +149,8 @@ export class VehiculoComponent implements OnInit {
     this.error = error.error.error;
     this.status = "error";
   }
+  handleError(error) {
+    this.error = error.error.errors;
+  }
+
 }

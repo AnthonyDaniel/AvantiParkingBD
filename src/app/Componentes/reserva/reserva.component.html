@@ -7,7 +7,7 @@
         <label class="text" for="e"><strong>PARQUEO</strong></label>
         <select name="parqueo" [(ngModel)]="confirmar.parqueo" class="custom-select my-1 mr-sm-2" required>
           <option></option>
-          <option value="{{p.idParqueo}}" *ngFor="let p of parqueos">{{p.idParqueo}} {{p.nombre}}
+          <option value="{{p.id_parqueo}}" *ngFor="let p of parqueos">{{p.id_parqueo}} {{p.nombre}}
           </option>
         </select>
       </div>
@@ -37,6 +37,7 @@
             </div>
           </div>
         </div>
+  
         <div class="col-6">
           <div class="mr-auto">
             <div class=row>
@@ -51,6 +52,14 @@
             </div>
           </div>
         </div>
+        <div class="col-md-6">
+          <label class="text" for="e"><strong>TIPO</strong></label>
+          <select name="sede" [(ngModel)]="confirmar.tipo_espacio" class="custom-select my-1 mr-sm-2">
+              <option selected disabled>...</option>
+              <option value="regular" requered>Regular</option>
+              <option value="especial" requered>Especial</option>
+          </select>
+      </div>
       </div>
       <div class="text-center">
         <button type="submit" id="OpenModal" *ngIf="reservas.fechaReserva!=null" class="btn btn-outline-primary"
@@ -58,7 +67,7 @@
       </div>
     </form>
     <br><br>
-    <div *ngIf="statusSpace">
+    <div *ngIf="estadoEspacio">
       <div class="modal fade bd-example-modal-xl2" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -90,7 +99,7 @@
                         </td>
                         <td>
                           <button type="button" class="btn btn-outline-primary"
-                            (click)="selectSpace(s)"><strong>SELECCIONAR</strong></button>
+                            (click)="seleccionarEspacio(s)"><strong>SELECCIONAR</strong></button>
                         </td>
                       </tr>
                     </tbody>
@@ -116,8 +125,8 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">DIA RESERVA</th>
-          <th scope="col">HORA INICIAL</th>
+          <th scope="col">DIA</th>
+          <th scope="col">HORA INICIO</th>
           <th scope="col">HORA FINAL</th>
           <th scope="col">ESPACIO</th>
           <th scope="col">VEHICULO</th>
@@ -142,11 +151,11 @@
             <input type="text" class="form-control" disabled [(ngModel)]="s.espacio">
           </td>
           <td>
-            <input type="text" class="form-control" disabled [(ngModel)]="s.vehiculo">
+            <input type="text" class="form-control" disabled [(ngModel)]="s.placa">
           </td>
           <td>
-            <button type="button" class="btn btn-outline-primary"
-              (click)="deleteReserve(s)"><strong>ELIMINAR</strong></button>
+            <button type="button" class="btn btn-danger"
+              (click)="eliminarReserva(s)"><strong>ELIMINAR</strong></button>
             </td>
         </tr>
       </tbody>

@@ -15,6 +15,7 @@ import { ReservaComponent } from './Componentes/reserva/reserva.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsuarioPiper } from './Piper/usuario.piper';
+import { PrincipalComponent } from './Componentes/principal/principal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UsuarioPiper } from './Piper/usuario.piper';
     VehiculoComponent,
     AdministradorComponent,
     ReservaComponent,
-    UsuarioPiper
+    UsuarioPiper,
+    PrincipalComponent
   ],
   imports: [
     BrowserModule,

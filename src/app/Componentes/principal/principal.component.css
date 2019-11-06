@@ -1,0 +1,46 @@
+.grid-block{
+    background-image: url('/assets/reality.jpg');
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: absolute;
+    right: 0; 
+    top: 0;
+    animation: movimiento;
+    
+  }
+  
+  .grid-block::before{
+    content: '';
+    display: block;
+    background: inherit;
+    position: absolute;
+    width: 100%; height: 100%;
+    left: 0; top: 0;
+  
+    transform: scale(1.2,1.4);
+  }
+
+  .container{
+      padding-top: 100px;
+      position: relative;
+    top: 7vh;
+    background: rgba(0,0,0,.8);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #000;
+    margin-bottom: 40px;
+    margin-top: 40px; 
+  }
+  h1{
+      color: white;
+  }
+  @keyframes movimiento{
+    from{
+        background-position: bottom left;
+    }to{
+        background-position: top right;
+    }
+  }

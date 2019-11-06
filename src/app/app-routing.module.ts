@@ -9,7 +9,9 @@ import { AdministradorComponent } from './Componentes/administrador/administrado
 import { AdminLoginService } from './Servicios/admin-login.service';
 import { VehiculoComponent } from './Componentes/vehiculo/vehiculo.component';
 import { ReservaComponent } from './Componentes/reserva/reserva.component';
+import { PrincipalComponent } from './Componentes/principal/principal.component';
 const routes: Routes = [
+  { path: '' , component:PrincipalComponent },
   { path: 'login', component: LoginComponent, canActivate: [BeforeLoginService]},
   { path: 'registrar', component: RegistrarComponent,canActivate: [BeforeLoginService]},
   { path: 'vehiculo', component: VehiculoComponent ,canActivate: [AfterLoginService]},
